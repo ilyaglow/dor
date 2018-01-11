@@ -5,6 +5,7 @@ Fast HTTP service which shows a specified domain rank from following providers:
 - Alexa
 - Majestic
 - Umbrella OpenDNS
+- Statvoo
 
 Data is updated once a day automatically
 
