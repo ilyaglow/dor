@@ -1,3 +1,5 @@
+[![](https://godoc.org/github.com/ilyaglow/dor?status.svg)](http://godoc.org/github.com/ilyaglow/dor)
+
 DOR - Domain Ranker
 -------------------
 
