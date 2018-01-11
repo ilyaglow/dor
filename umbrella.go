@@ -1,7 +1,6 @@
 package dor
 
 import (
-	"io"
 	"sync"
 	"time"
 )
@@ -15,9 +14,6 @@ type UmbrellaCollection struct {
 	Description string
 	Map         LookupMap
 	Timestamp   time.Time
-	tmpFile     *io.ReadCloser
-	tmpFileName string
-	csvFile     *io.Reader
 }
 
 func (f *UmbrellaCollection) Do() error {

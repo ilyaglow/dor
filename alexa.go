@@ -1,8 +1,6 @@
 package dor
 
 import (
-	"archive/zip"
-	"io"
 	"sync"
 	"time"
 )
@@ -14,9 +12,6 @@ const (
 type AlexaCollection struct {
 	sync.Mutex
 	Description string
-	tmpFile     *zip.ReadCloser
-	tmpFileName string
-	csvFile     *io.ReadCloser
 	Map         LookupMap
 	Timestamp   time.Time
 }
