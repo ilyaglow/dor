@@ -49,6 +49,13 @@ func (d *DomainRank) Fill() error {
 	log.Println("Umbrella is done")
 	d.data = append(d.data, umbrella)
 
+	statvoo := &StatvooCollection{}
+	if err := statvoo.Do(); err != nil {
+		return err
+	}
+	log.Println("Statvoo is done")
+	d.data = append(d.data, statvoo)
+
 	return nil
 }
 
