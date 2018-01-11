@@ -2,8 +2,17 @@ package dor
 
 import (
 	"log"
+	"sync"
 	"time"
 )
+
+// collections is a slice of implemented List structs
+var collections = []List{
+	&AlexaCollection{},
+	&MajesticCollection{},
+	&UmbrellaCollection{},
+	&StatvooCollection{},
+}
 
 // RankResponse represents domain rank response
 // that server sends back to client
@@ -23,39 +32,24 @@ type FindResponse struct {
 
 // DomainRank represents the top level structure
 type DomainRank struct {
+	sync.Mutex
 	data []List
 }
 
 // Fill fills available List interfaces
 func (d *DomainRank) Fill() error {
-	alexa := &AlexaCollection{}
-	if err := alexa.Do(); err != nil {
-		return err
+	for _, c := range collections {
+		go func(c List) {
+			if err := c.Do(); err != nil {
+				log.Printf("Failed to enrich %s: %s", c.GetDesc(), err.Error())
+			} else {
+				log.Printf("%s is done", c.GetDesc())
+			}
+			d.Lock()
+			d.data = append(d.data, c)
+			d.Unlock()
+		}(c)
 	}
-	log.Println("Alexa is done")
-	d.data = append(d.data, alexa)
-
-	majestic := &MajesticCollection{}
-	if err := majestic.Do(); err != nil {
-		return err
-	}
-	log.Println("Majestic is done")
-	d.data = append(d.data, majestic)
-
-	umbrella := &UmbrellaCollection{}
-	if err := umbrella.Do(); err != nil {
-		return err
-	}
-	log.Println("Umbrella is done")
-	d.data = append(d.data, umbrella)
-
-	statvoo := &StatvooCollection{}
-	if err := statvoo.Do(); err != nil {
-		return err
-	}
-	log.Println("Statvoo is done")
-	d.data = append(d.data, statvoo)
-
 	return nil
 }
 
