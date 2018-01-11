@@ -17,7 +17,7 @@ func main() {
 	flag.Parse()
 	hp := fmt.Sprintf("%s:%s", *bindAddr, *bindPort)
 
-	duration := time.Hour * 12
+	duration := time.Hour * 24
 
 	d := &dor.DomainRank{}
 	if err := d.FillAndUpdate(duration); err != nil {
