@@ -16,9 +16,8 @@ func main() {
 	bindPort := flag.String("port", "8080", "Port to bind")
 	flag.Parse()
 	hp := fmt.Sprintf("%s:%s", *bindAddr, *bindPort)
-	fmt.Println(hp)
 
-	duration := time.Hour * 24
+	duration := time.Hour * 12
 
 	d := &dor.DomainRank{}
 	if err := d.FillAndUpdate(duration); err != nil {
