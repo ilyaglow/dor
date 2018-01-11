@@ -9,6 +9,9 @@ const (
 	statvooTop1M = "https://statvoo.com/dl/top-1million-sites.csv.zip"
 )
 
+// StatvooCollection represents
+//
+// More info: https://statvoo.com/top/sites
 type StatvooCollection struct {
 	sync.Mutex
 	Description string
@@ -16,6 +19,7 @@ type StatvooCollection struct {
 	Timestamp   time.Time
 }
 
+// Do implements filling a LookupMap from the data source
 func (f *StatvooCollection) Do() error {
 	f.Description = "statvoo"
 
@@ -31,14 +35,17 @@ func (f *StatvooCollection) Do() error {
 	return nil
 }
 
+// GetTime represents a collection last updated timestamp
 func (f *StatvooCollection) GetTime() time.Time {
 	return f.Timestamp
 }
 
+// GetDesc represents a collection description
 func (f *StatvooCollection) GetDesc() string {
 	return f.Description
 }
 
+// Get represents a specific domain rank finding
 func (f *StatvooCollection) Get(d string) (rank uint, presence bool) {
 	rank, prs := f.Map[d]
 	return rank, prs
