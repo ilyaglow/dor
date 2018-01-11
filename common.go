@@ -18,8 +18,6 @@ import (
 type LookupMap map[string]uint
 
 // List is an interface for collections.
-//
-// Alexa is the only one implemented by now.
 type List interface {
 	Do() error
 	GetTime() time.Time

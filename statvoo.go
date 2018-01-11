@@ -9,7 +9,7 @@ const (
 	statvooTop1M = "https://statvoo.com/dl/top-1million-sites.csv.zip"
 )
 
-// StatvooCollection represents
+// StatvooCollection represents top 1 million websites by statvoo
 //
 // More info: https://statvoo.com/top/sites
 type StatvooCollection struct {
