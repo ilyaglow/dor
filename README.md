@@ -3,18 +3,26 @@
 DOR - Domain Ranker
 -------------------
 
-Fast HTTP service which shows a specified domain rank from following providers:
-- Alexa
-- Majestic
-- Umbrella OpenDNS
-- Statvoo
+Fast HTTP service (build on top of amazing [iris framework](https://github.com/kataras/iris)) which shows a specified domain rank from following providers:
+- [Alexa](https://www.alexa.com/topsites)
+- [Majestic](https://blog.majestic.com/development/alexa-top-1-million-sites-retired-heres-majestic-million/)
+- [Umbrella OpenDNS](https://umbrella.cisco.com/blog/2016/12/14/cisco-umbrella-1-million/)
+- [Statvoo](https://statvoo.com/top/sites)
 
-Data is updated once a day automatically
+Can be used as a base for a domain categorization / network filters / suspicious domain detection.
+
+Data is updated once a day automatically.
 
 ## Installation
 
+Check out the [releases page](https://github.com/ilyaglow/dor/releases).
+
+### Manual build
+
+**dor** supports **Go 1.9 and later**
+
 ```
-go get -u github.com/ilyaglow/dor
+go get -u github.com/ilyaglow/dor/cmd/dor-webservice
 ```
 
 ## Web service usage
