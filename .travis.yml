@@ -11,7 +11,7 @@ script:
 
 before_deploy:
   - CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -ldflags="-s -w" -a -installsuffix cgo -o dor-webservice-amd64
-  - CGO_ENABLED=0 GOOS=linux GOARCH=386 go build -ldflags="-s -w" -a -installsuffix cgo -o dor-webservice-x86
+  - CGO_ENABLED=0 GOOS=linux GOARCH=386 go build -ldflags="-s -w" -a -installsuffix cgo -o dor-webservice-386
   - CGO_ENABLED=0 GOOS=windows GOARCH=386 go build -a -installsuffix cgo -o dor-webservice-x86.exe
   - CGO_ENABLED=0 GOOS=darwin go build -ldflags="-s -w" -a -installsuffix cgo -o dor-webservice-mac
 
