@@ -27,7 +27,7 @@ type List interface {
 
 // downloadURL downloads file to a temporary file
 func downloadURL(url string, descr string) (filename string, error error) {
-	zf, err := ioutil.TempFile("/tmp", fmt.Sprintf("dor-%s-", descr))
+	zf, err := ioutil.TempFile(os.TempDir(), fmt.Sprintf("dor-%s-", descr))
 	if err != nil {
 		return "", err
 	}
