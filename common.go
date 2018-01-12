@@ -10,20 +10,7 @@ import (
 	"os"
 	"strconv"
 	"strings"
-	"time"
 )
-
-// LookupMap is the lookup hashmap,
-// which stores domain and its rank
-type LookupMap map[string]uint
-
-// List is an interface for collections.
-type List interface {
-	Do() error
-	GetTime() time.Time
-	GetDesc() string
-	Get(string) (uint, bool) // returns a specific domain rank and its presence
-}
 
 // downloadURL downloads file to a temporary file
 func downloadURL(url string, descr string) (filename string, error error) {

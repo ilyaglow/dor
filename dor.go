@@ -6,16 +6,20 @@ import (
 	"time"
 )
 
-// collections is a slice of implemented List structs
-var collections = []List{
-	&AlexaCollection{},
-	&MajesticCollection{},
-	&UmbrellaCollection{},
-	&StatvooCollection{},
+// List is an interface for collections.
+type List interface {
+	Do() error               // fills a LookupMap
+	Get(string) (uint, bool) // gets rank from the map
+	GetDesc() string         // description getter
+	GetTime() time.Time      // time getter
 }
 
+// LookupMap is the lookup hashmap,
+// which stores domain and its rank.
+type LookupMap map[string]uint
+
 // RankResponse represents domain rank response
-// that server sends back to client
+// that server sends back to client.
 type RankResponse struct {
 	Domain      string    `json:"domain"`
 	Rank        uint      `json:"rank"`
@@ -23,20 +27,20 @@ type RankResponse struct {
 	Description string    `json:"description"`
 }
 
-// Response is a find response
+// Response is a find request response.
 type FindResponse struct {
 	RequestData string          `json:"data"`
 	Hits        []*RankResponse `json:"ranks"`
 	Timestamp   time.Time       `json:"timestamp"`
 }
 
-// DomainRank represents the top level structure
+// DomainRank represents the top level structure.
 type DomainRank struct {
 	sync.Mutex
 	data []List
 }
 
-// Fill fills available List interfaces
+// Fill fills available List interfaces.
 func (d *DomainRank) Fill() error {
 	for _, c := range collections {
 		go func(c List) {

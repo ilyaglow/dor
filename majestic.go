@@ -5,7 +5,6 @@ import (
 	"net/http"
 	"strconv"
 	"strings"
-	"sync"
 	"time"
 )
 
@@ -18,11 +17,8 @@ const (
 //
 // More info: https://blog.majestic.com/development/alexa-top-1-million-sites-retired-heres-majestic-million/
 type MajesticCollection struct {
-	sync.Mutex
-	Description string
-	Map         LookupMap
-	Timestamp   time.Time
-	resp        *http.Response
+	Collection
+	resp *http.Response
 }
 
 // fetch send request to server with the data
@@ -70,20 +66,4 @@ func (f *MajesticCollection) Do() error {
 		return err
 	}
 	return nil
-}
-
-// GetTime represents a collection last updated timestamp
-func (f *MajesticCollection) GetTime() time.Time {
-	return f.Timestamp
-}
-
-// GetDesc represents a collection description
-func (f *MajesticCollection) GetDesc() string {
-	return f.Description
-}
-
-// Get represents a specific domain rank finding
-func (f *MajesticCollection) Get(d string) (rank uint, presence bool) {
-	rank, prs := f.Map[d]
-	return rank, prs
 }

@@ -1,7 +1,6 @@
 package dor
 
 import (
-	"sync"
 	"time"
 )
 
@@ -13,10 +12,7 @@ const (
 //
 // More info: https://statvoo.com/top/sites
 type StatvooCollection struct {
-	sync.Mutex
-	Description string
-	Map         LookupMap
-	Timestamp   time.Time
+	Collection
 }
 
 // Do implements filling a LookupMap from the data source
@@ -33,20 +29,4 @@ func (f *StatvooCollection) Do() error {
 	f.Unlock()
 
 	return nil
-}
-
-// GetTime represents a collection last updated timestamp
-func (f *StatvooCollection) GetTime() time.Time {
-	return f.Timestamp
-}
-
-// GetDesc represents a collection description
-func (f *StatvooCollection) GetDesc() string {
-	return f.Description
-}
-
-// Get represents a specific domain rank finding
-func (f *StatvooCollection) Get(d string) (rank uint, presence bool) {
-	rank, prs := f.Map[d]
-	return rank, prs
 }
