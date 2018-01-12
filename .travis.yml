@@ -1,0 +1,31 @@
+language: go
+
+go:
+  - 1.8
+  - 1.9
+  - master
+
+script:
+  - go build
+  - cd cmd/dor-webservice
+  - go build
+
+before_deploy:
+  - CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -ldflags="-s -w" -a -installsuffix cgo -o dor-webservice-amd64
+  - CGO_ENABLED=0 GOOS=linux GOARCH=386 go build -ldflags="-s -w" -a -installsuffix cgo -o dor-webservice-x86
+  - CGO_ENABLED=0 GOOS=windows GOARCH=386 go build -a -installsuffix cgo -o dor-webservice-x86.exe
+  - CGO_ENABLED=0 GOOS=darwin go build -ldflags="-s -w" -a -installsuffix cgo -o dor-webservice-mac
+
+deploy:
+  provider: releases
+  api_key: $GITHUB_TOKEN
+  skip_cleanup: true
+  file:
+    - dor-webservice-amd64
+    - dor-webservice-386
+    - dor-webservice-x86.exe
+    - dor-webservice-mac
+  on:
+    repo: ilyaglow/dor
+    tags: true
+    condition: $TRAVIS_GO_VERSION = 1.9
