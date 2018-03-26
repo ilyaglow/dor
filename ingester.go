@@ -11,6 +11,7 @@ var ingesters = []Ingester{
 	NewStatvoo(),
 	NewUmbrella(),
 	NewMajestic(),
+	NewPageRank(),
 }
 
 // IngesterConf represents a top popular domains provider configuration.
