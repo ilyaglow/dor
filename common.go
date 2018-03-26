@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"io"
 	"io/ioutil"
+	"log"
 	"net/http"
 	"os"
 	"strconv"
@@ -83,4 +84,48 @@ func mapFromURLZip(url string, desc string) (LookupMap, error) {
 	}
 
 	return m, nil
+}
+
+// chanFromURLZip translates a common formatted CSV:
+//	rank,domain
+// that is ZIP packed and hosted on a specified url
+func chanFromURLZip(url string, desc string, rc chan Rank) {
+	n, err := downloadURL(url, desc)
+	if err != nil {
+		close(rc)
+		log.Println(err)
+		return
+	}
+
+	z, c, err := zipContent(n)
+	if err != nil {
+		close(rc)
+		log.Println(err)
+		return
+	}
+
+	defer (*c).Close()
+	defer z.Close()
+	defer os.Remove(n)
+
+	scanner := bufio.NewScanner(*c)
+	for scanner.Scan() {
+		parts := strings.Split(scanner.Text(), ",")
+		if strings.Contains(parts[0], "\"") || strings.Contains(parts[1], "\"") {
+			parts[0] = strings.Trim(parts[0], "\"")
+			parts[1] = strings.Trim(parts[1], "\"")
+		}
+
+		rc <- &SimpleRank{
+			Rank:   strToUint(parts[0]),
+			Domain: parts[1],
+		}
+	}
+
+	close(rc)
+}
+
+func strToUint(s string) uint {
+	pint, _ := strconv.ParseInt(s, 10, 32)
+	return uint(pint)
 }
