@@ -134,10 +134,14 @@ func (d *App) FillByTimer(duration time.Duration) error {
 	}
 
 	ticker := time.NewTicker(duration)
-	go func() {
+	defer ticker.Stop()
+
+	for {
 		<-ticker.C
-		d.Fill()
-	}()
+		if err := d.Fill(); err != nil {
+			return err
+		}
+	}
 
 	return nil
 }
