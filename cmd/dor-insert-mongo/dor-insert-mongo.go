@@ -1,6 +1,7 @@
 package main
 
 import (
+	"flag"
 	"time"
 
 	"github.com/ilyaglow/dor"
@@ -9,7 +10,10 @@ import (
 const updatePeriod = time.Hour * 24
 
 func main() {
-	d, err := dor.New("mongodb", "", false)
+	mongoURL := flag.String("mongo", "", "MongoDB URL")
+	flag.Parse()
+
+	d, err := dor.New("mongodb", *mongoURL, false)
 	if err != nil {
 		panic(err)
 	}
