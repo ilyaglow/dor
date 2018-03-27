@@ -30,6 +30,10 @@ func (mc *memoryCollection) get(d string) (rank uint, presence bool) {
 func (ms *MemoryStorage) Get(d string, sources ...string) ([]Rank, error) {
 	var ranks []Rank
 	for k := range ms.Maps {
+		if len(sources) > 0 && !sliceContains(sources, ms.Maps[k].Description) {
+			continue
+		}
+
 		rank, prs := ms.Maps[k].get(d)
 		if prs != true {
 			continue
@@ -48,19 +52,38 @@ func (ms *MemoryStorage) Get(d string, sources ...string) ([]Rank, error) {
 	return ranks, nil
 }
 
+// GetMore is not supported for the memory storage
+func (ms *MemoryStorage) GetMore(d string, lps int, sources ...string) ([]Rank, error) {
+	return ms.Get(d, sources...)
+}
+
 // Put implements Put method of the Storage interface
 func (ms *MemoryStorage) Put(c <-chan Rank, s string, t time.Time) error {
-	for r := range c {
-		if _, ok := ms.Maps[s]; !ok {
-			ms.Maps[s] = &memoryCollection{
-				Map:         make(LookupMap),
-				Description: s,
-				Timestamp:   t,
-			}
-		}
+	lm := make(LookupMap)
 
-		ms.Maps[s].Map[r.GetDomain()] = r.GetRank()
+	for r := range c {
+		lm[r.GetDomain()] = r.GetRank()
+	}
+
+	if _, ok := ms.Maps[s]; ok {
+		ms.Maps[s].Map = lm
+		return nil
+	}
+
+	ms.Maps[s] = &memoryCollection{
+		Map:         lm,
+		Description: s,
+		Timestamp:   t,
 	}
 
 	return nil
+}
+
+func sliceContains(ss []string, s string) bool {
+	for i := range ss {
+		if ss[i] == s {
+			return true
+		}
+	}
+	return false
 }
