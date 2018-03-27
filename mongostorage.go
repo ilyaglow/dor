@@ -9,6 +9,8 @@ import (
 	"github.com/globalsign/mgo/bson"
 )
 
+const docsLimit = 100
+
 // MongoStorage implements the Storage interface for MongoDB
 type MongoStorage struct {
 	sess *mgo.Session // mongodb session
@@ -104,14 +106,48 @@ func (m *MongoStorage) Get(d string, sources ...string) ([]Rank, error) {
 
 	if len(sources) > 0 {
 		for i := range sources {
-			query = c.Find(bson.M{"domain": d, "source": sources[i]}).Sort("-last_update").Limit(1)
+			err := c.Find(bson.M{"domain": d, "source": sources[i]}).Sort("-last_update").One(&e)
+			if err != nil {
+				log.Println(err)
+				continue
+			}
+			ranks = append(ranks, e)
+		}
+	} else {
+		query = c.Find(bson.M{"domain": d}).Sort("-last_update").Limit(docsLimit)
+		items := query.Iter()
+		for items.Next(&e) {
+			ranks = append(ranks, e)
+		}
+	}
+
+	return ranks, nil
+}
+
+// GetMore implements Storage GetMore function
+func (m *MongoStorage) GetMore(d string, lps int, sources ...string) ([]Rank, error) {
+	s := m.sess.Copy()
+	c := s.DB(m.db).C(m.c)
+
+	var query *mgo.Query
+	var ranks []Rank
+	e := ExtendedRank{}
+
+	// check if lps is not bigger than allowed
+	if lps > docsLimit {
+		lps = docsLimit
+	}
+
+	if len(sources) > 0 {
+		for i := range sources {
+			query = c.Find(bson.M{"domain": d, "source": sources[i]}).Sort("-last_update").Limit(lps)
 			items := query.Iter()
 			for items.Next(&e) {
 				ranks = append(ranks, e)
 			}
 		}
 	} else {
-		query = c.Find(bson.M{"domain": d})
+		query = c.Find(bson.M{"domain": d}).Sort("-last_update").Limit(docsLimit)
 		items := query.Iter()
 		for items.Next(&e) {
 			ranks = append(ranks, e)
