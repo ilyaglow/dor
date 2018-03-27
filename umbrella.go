@@ -8,25 +8,28 @@ const (
 	umbrellaTop1M = "http://s3-us-west-1.amazonaws.com/umbrella-static/top-1m.csv.zip"
 )
 
-// UmbrellaCollection represents List implementation for OpenDNS Umbrella Top 1M domains
+// UmbrellaIngester represents Ingester implementation for OpenDNS Umbrella Top 1M domains
 //
 // More info: https://umbrella.cisco.com/blog/2016/12/14/cisco-umbrella-1-million/
-type UmbrellaCollection struct {
-	Collection
+type UmbrellaIngester struct {
+	IngesterConf
 }
 
-// Do implements filling a map with the data from OpenDNS
-func (f *UmbrellaCollection) Do() error {
-	f.Description = "umbrella"
-
-	m, err := mapFromURLZip(umbrellaTop1M, f.Description)
-	if err != nil {
-		return err
+// NewUmbrella bootstraps UmbrellaIngester
+func NewUmbrella() *UmbrellaIngester {
+	return &UmbrellaIngester{
+		IngesterConf: IngesterConf{
+			Description: "umbrella",
+		},
 	}
-	f.Lock()
-	f.Map = m
-	f.Timestamp = time.Now().UTC()
-	f.Unlock()
+}
 
-	return nil
+// Do implements Ingester Do func with the data from OpenDNS
+func (in *UmbrellaIngester) Do() (chan Rank, error) {
+	in.Timestamp = time.Now().UTC()
+	ch := make(chan Rank)
+
+	go chanFromURLZip(umbrellaTop1M, in.Description, ch)
+
+	return ch, nil
 }

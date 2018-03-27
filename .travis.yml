@@ -1,30 +1,36 @@
 language: go
 
 go:
-  - 1.9
+  - "1.10"
   - master
 
 script:
-  - go build
-  - cd cmd/dor-webservice
-  - go build
+  - go build ./...
 
 before_deploy:
-  - CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -ldflags="-s -w" -a -installsuffix cgo -o dor-webservice-amd64
-  - CGO_ENABLED=0 GOOS=linux GOARCH=386 go build -ldflags="-s -w" -a -installsuffix cgo -o dor-webservice-386
-  - CGO_ENABLED=0 GOOS=windows GOARCH=386 go build -a -installsuffix cgo -o dor-webservice-x86.exe
-  - CGO_ENABLED=0 GOOS=darwin go build -ldflags="-s -w" -a -installsuffix cgo -o dor-webservice-mac
+  - CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -ldflags="-s -w" -a -installsuffix cgo -o dor-web-mongodb-${TRAVIS_TAG}-amd64 service/dor-web-mongodb/dor-web-mongodb.go
+  - CGO_ENABLED=0 GOOS=linux GOARCH=386 go build -ldflags="-s -w" -a -installsuffix cgo -o dor-web-mongodb-${TRAVIS_TAG}-386 service/dor-web-mongodb/dor-web-mongodb.go
+  - CGO_ENABLED=0 GOOS=windows GOARCH=386 go build -ldflags="-s -w" -a -installsuffix cgo -o dor-web-mongodb-${TRAVIS_TAG}-x86.exe service/dor-web-mongodb/dor-web-mongodb.go
+  - CGO_ENABLED=0 GOOS=darwin go build -ldflags="-s -w" -a -installsuffix cgo -o dor-web-mongodb-${TRAVIS_TAG}-mac service/dor-web-mongodb/dor-web-mongodb.go
+  - CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -ldflags="-s -w" -a -installsuffix cgo -o dor-insert-mongo-${TRAVIS_TAG}-amd64 cmd/dor-insert-mongo/dor-insert-mongo.go
+  - CGO_ENABLED=0 GOOS=linux GOARCH=386 go build -ldflags="-s -w" -a -installsuffix cgo -o dor-insert-mongo-${TRAVIS_TAG}-386 cmd/dor-insert-mongo/dor-insert-mongo.go
+  - CGO_ENABLED=0 GOOS=windows GOARCH=386 go build -ldflags="-s -w" -a -installsuffix cgo -o dor-insert-mongo-${TRAVIS_TAG}-x86.exe cmd/dor-insert-mongo/dor-insert-mongo.go
+  - CGO_ENABLED=0 GOOS=darwin go build -ldflags="-s -w" -a -installsuffix cgo -o dor-insert-mongo-${TRAVIS_TAG}-mac cmd/dor-insert-mongo/dor-insert-mongo.go
 
 deploy:
   provider: releases
   api_key: $GITHUB_TOKEN
   skip_cleanup: true
   file:
-    - dor-webservice-amd64
-    - dor-webservice-386
-    - dor-webservice-x86.exe
-    - dor-webservice-mac
+    - dor-web-mongodb-${TRAVIS_TAG}-amd64
+    - dor-web-mongodb-${TRAVIS_TAG}-386
+    - dor-web-mongodb-${TRAVIS_TAG}-x86.exe
+    - dor-web-mongodb-${TRAVIS_TAG}-mac
+    - dor-insert-mongo-${TRAVIS_TAG}-amd64
+    - dor-insert-mongo-${TRAVIS_TAG}-386
+    - dor-insert-mongo-${TRAVIS_TAG}-x86.exe
+    - dor-insert-mongo-${TRAVIS_TAG}-mac
   on:
     repo: ilyaglow/dor
     tags: true
-    condition: $TRAVIS_GO_VERSION = 1.9
+    condition: $TRAVIS_GO_VERSION = "1.10"

@@ -8,23 +8,27 @@ const (
 	alexaTop1M = "http://s3.amazonaws.com/alexa-static/top-1m.csv.zip"
 )
 
-// AlexaCollection represents List implementation for Alexa Top 1 Million websites
-type AlexaCollection struct {
-	Collection
+// AlexaIngester represents Ingester implementation for Alexa Top 1 Million websites
+type AlexaIngester struct {
+	IngesterConf
 }
 
-// Do implements filling a map with the data from Alexa Top 1M CSV file
-func (f *AlexaCollection) Do() error {
-	f.Description = "alexa"
-
-	m, err := mapFromURLZip(alexaTop1M, f.Description)
-	if err != nil {
-		return err
+// NewAlexa bootstraps AlexaIngester
+func NewAlexa() *AlexaIngester {
+	return &AlexaIngester{
+		IngesterConf: IngesterConf{
+			Description: "alexa",
+		},
 	}
-	f.Lock()
-	f.Map = m
-	f.Timestamp = time.Now().UTC()
-	f.Unlock()
 
-	return nil
+}
+
+// Do implements Ingester Do func with the data from Alexa Top 1M CSV file
+func (in *AlexaIngester) Do() (chan Rank, error) {
+	in.Timestamp = time.Now().UTC()
+	ch := make(chan Rank)
+
+	go chanFromURLZip(alexaTop1M, in.Description, ch)
+
+	return ch, nil
 }

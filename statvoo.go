@@ -5,28 +5,31 @@ import (
 )
 
 const (
-	statvooTop1M = "https://statvoo.com/dl/top-1million-sites.csv.zip"
+	statvooTop1M = "https://siteinfo.statvoo.com/dl/top-1million-sites.csv.zip"
 )
 
-// StatvooCollection represents top 1 million websites by statvoo
+// StatvooIngester represents top 1 million websites by statvoo
 //
 // More info: https://statvoo.com/top/sites
-type StatvooCollection struct {
-	Collection
+type StatvooIngester struct {
+	IngesterConf
 }
 
-// Do implements filling a LookupMap from the data source
-func (f *StatvooCollection) Do() error {
-	f.Description = "statvoo"
-
-	m, err := mapFromURLZip(statvooTop1M, f.Description)
-	if err != nil {
-		return err
+// NewStatvoo boostraps StatvooIngester
+func NewStatvoo() *StatvooIngester {
+	return &StatvooIngester{
+		IngesterConf: IngesterConf{
+			Description: "statvoo",
+		},
 	}
-	f.Lock()
-	f.Map = m
-	f.Timestamp = time.Now().UTC()
-	f.Unlock()
+}
 
-	return nil
+// Do implements Ingester Do func with the data from Statvoo Top 1M
+func (in *StatvooIngester) Do() (chan Rank, error) {
+	in.Timestamp = time.Now().UTC()
+	ch := make(chan Rank)
+
+	go chanFromURLZip(statvooTop1M, in.Description, ch)
+
+	return ch, nil
 }
