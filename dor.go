@@ -23,8 +23,9 @@ type Ingester interface {
 
 // Storage represents an interface to store and query ranks.
 type Storage interface {
-	Put(<-chan Rank, string, time.Time) error            // Put is usually a bulk inserter from the channel that works in a goroutine, second argument is a Source of the data and third is the last update time
-	Get(domain string, params ...string) ([]Rank, error) // Get is a simple getter
+	Put(<-chan Rank, string, time.Time) error                          // Put is usually a bulk inserter from the channel that works in a goroutine, second argument is a Source of the data and third is the last update time
+	Get(domain string, sources ...string) ([]Rank, error)              // Get is a simple getter for the latest rank of the domain in a particular domain rank provider
+	GetMore(domain string, lps int, sources ...string) ([]Rank, error) // GetAll is a getter that retreives historical data on the domain limited by lps (limit per source)
 }
 
 // Rank is an interface for different ranking systems
