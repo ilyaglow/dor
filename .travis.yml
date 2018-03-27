@@ -33,4 +33,4 @@ deploy:
   on:
     repo: ilyaglow/dor
     tags: true
-    condition: $TRAVIS_GO_VERSION = 1.9
+    condition: $TRAVIS_GO_VERSION = "1.10"
