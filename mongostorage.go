@@ -38,6 +38,9 @@ func NewMongoStorage(u string, db string, col string, size int, w int, ret bool)
 		Key:        []string{"domain", "rank", "source"},
 		Background: true,
 		Sparse:     true,
+		// Capped:     true,
+		// MaxBytes:   5368709120, // 5Gb
+		// MaxDocs:    100000000,  // 100M
 	}
 
 	if ret {
@@ -177,7 +180,6 @@ func (m *MongoStorage) send(c <-chan Rank, s string, t time.Time) error {
 		i++
 
 		if i == m.size {
-			log.Println("bulk.Run()")
 			if _, err := bulk.Run(); err != nil {
 				log.Println("mongo storage: failed to run bulk run")
 			}
@@ -189,7 +191,6 @@ func (m *MongoStorage) send(c <-chan Rank, s string, t time.Time) error {
 	}
 
 	if i != 0 {
-		log.Println("bulk.Run() the tail")
 		if _, err := bulk.Run(); err != nil {
 			log.Println("mongo storage: failed to run bulk run")
 		}
