@@ -1,5 +1,5 @@
 /*
-Package dor is a provider's data collection library and fast HTTP service (build on top of amazing iris framework) which shows a specified domain rank from following providers: Alexa, Majestic, Umbrella OpenDNS and Statvoo
+Package dor is a domain rank data collection library and fast HTTP service (build on top of amazing iris framework) which shows a specified domain's rank from the following providers: Alexa, Majestic, Umbrella OpenDNS, Statvoo and Open PageRank.
 
 Can be used as a base for a domain categorization / network filters / suspicious domain detection. Data is updated once a day automatically, but it is configurable.
 
