@@ -6,7 +6,7 @@ Can be used as a base for a domain categorization / network filters / suspicious
 
 Usage:
 	dor-web-inmemory -h
-	Usage of dor-webservice:
+	Usage of dor-web-inmemory:
 	-host string
 		IP-address to bind (default "127.0.0.1")
 	-port string
