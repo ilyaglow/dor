@@ -96,6 +96,7 @@ func chanFromURLZip(url string, desc string, rc chan Rank) {
 		log.Println(err)
 		return
 	}
+	log.Printf("%s downloaded successfully", url)
 
 	z, c, err := zipContent(n)
 	if err != nil {
