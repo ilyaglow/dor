@@ -31,22 +31,15 @@ go install ./...
 
 ## Web service usage
 
+Use MongoDB storage located at `mongoserver` and bind to port `8080`
 ```
-dor-web-mongodb -h
-
-Usage of dor-web-mongodb:
-  -host string
-    	IP-address to bind (default "127.0.0.1")
-  -mongo string
-    	MongoDB URL
-  -port string
-    	Port to bind (default "8080")
+DOR_MONGO_URL=mongoserver DOR_PORT=8080 dor-web-mongodb
 ```
 
 ## Fill database with the data
 
 ```
-go run cmd/dor-insert-mongo/dor-insert-mongo
+DOR_MONGO_URL=mongoserver go run cmd/dor-insert-mongo/dor-insert-mongo
 ```
 
 Or if you want just in-memory database:
