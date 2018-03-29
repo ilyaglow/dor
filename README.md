@@ -60,6 +60,15 @@ Usage of dor-web-inmemory:
     	Port to bind (default "8080")
 ```
 
+## Docker usage
+
+Project has [docker-compose](docker-compose.yml) that uses MongoDB as a storage. Make changes here accordingly if any (folder for data persistence, ports etc).
+
+```
+docker-compose up -d
+```
+
+
 ## Client usage
 
 ```

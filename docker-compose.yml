@@ -1,0 +1,23 @@
+version: "2"
+services:
+  web:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.web-mongo
+    ports:
+      - "8080:8080"
+    environment:
+      DOR_MONGO_URL: "mongo"
+      DOR_PORT: "8080"
+
+  insert:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.insert-mongo
+    environment:
+      DOR_MONGO_URL: "mongo"
+
+  mongo:
+    image: mongo:latest
+    volumes:
+      - ./mongodata:/data/db

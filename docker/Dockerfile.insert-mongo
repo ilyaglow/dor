@@ -1,0 +1,28 @@
+FROM golang:alpine AS build-env
+LABEL maintainer "Ilya Glotov <ilya@ilyaglotov.com>"
+LABEL repository "https://github.com/ilyaglow/dor"
+
+ENV CGO_ENABLED 0
+
+RUN apk -U --no-cache add git
+
+WORKDIR /go/src/github.com/ilyaglow/dor
+
+COPY . .
+
+RUN go get -d -v ./... \
+  && cd cmd/dor-insert-mongo/ \
+  && go build -ldflags="-s -w" -a -installsuffix cgo -o /tmp/dor-insert
+
+RUN chmod +x /tmp/dor-insert
+
+FROM alpine:edge
+
+RUN apk -U --no-cache add ca-certificates \
+  && adduser -D app
+
+COPY --from=build-env /tmp/dor-insert /dor-insert
+
+USER app
+
+ENTRYPOINT ["/dor-insert"]
