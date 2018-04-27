@@ -7,14 +7,6 @@ import (
 	"time"
 )
 
-// // Source is an interface for collections.
-// type Source interface {
-// 	Do() error               // fills the Storage
-// 	Get(string) (uint, bool) // gets rank from the Storage
-// 	GetDesc() string         // description getter
-// 	GetTime() time.Time      // time getter
-// }
-
 // Ingester fetches data and uploads it to the Storage
 type Ingester interface {
 	Do() (chan Rank, error) // returns a channel for consumers
@@ -142,8 +134,6 @@ func (d *App) FillByTimer(duration time.Duration) error {
 			return err
 		}
 	}
-
-	return nil
 }
 
 // Find represents find operation on the storage available
