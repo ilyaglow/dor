@@ -1,10 +1,8 @@
 version: "2"
 services:
   web:
+    image: ilyaglow/dor-web-mongo
     restart: always
-    build:
-      context: .
-      dockerfile: docker/Dockerfile.web-mongo
     depends_on:
       - mongo
     ports:
@@ -14,12 +12,10 @@ services:
       DOR_PORT: "8080"
 
   insert:
+    image: ilyaglow/dor-insert-mongo
     restart: always
     depends_on:
       - mongo
-    build:
-      context: .
-      dockerfile: docker/Dockerfile.insert-mongo
     environment:
       DOR_MONGO_URL: "mongo"
 
