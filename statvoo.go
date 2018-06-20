@@ -5,7 +5,7 @@ import (
 )
 
 const (
-	statvooTop1M = "https://siteinfo.statvoo.com/dl/top-1million-sites.csv.zip"
+	statvooTop1M = "https://statvoo.com/dl/top-1million-sites.csv.zip"
 )
 
 // StatvooIngester represents top 1 million websites by statvoo
