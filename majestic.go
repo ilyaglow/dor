@@ -58,6 +58,7 @@ func (in *MajesticIngester) fetch(url string) error {
 	if err != nil {
 		return err
 	}
+	log.Printf("%s downloaded successfully", url)
 	in.resp = r
 	return nil
 }
