@@ -74,25 +74,25 @@ $: curl 127.0.0.1:8080/rank/github.com
       "domain": "github.com",
       "rank": 33,
       "last_update": "2018-01-11T18:01:27.251103268Z",
-      "description": "majestic"
+      "source": "majestic"
     },
     {
       "domain": "github.com",
       "rank": 66,
       "last_update": "2018-01-11T18:01:27.97067767Z",
-      "description": "statvoo"
+      "source": "statvoo"
     },
     {
       "domain": "github.com",
       "rank": 72,
       "last_update": "2018-01-11T18:04:26.267833256Z",
-      "description": "alexa"
+      "source": "alexa"
     },
     {
       "domain": "github.com",
       "rank": 2367,
       "last_update": "2018-01-11T18:06:50.866600102Z",
-      "description": "umbrella"
+      "source": "umbrella"
     },
     {
       "domain": "github.com",
