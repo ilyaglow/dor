@@ -1,20 +1,26 @@
-[![Build Status](https://travis-ci.org/ilyaglow/dor.svg?branch=master)](https://travis-ci.org/ilyaglow/dor) [![](https://godoc.org/github.com/ilyaglow/dor?status.svg)](http://godoc.org/github.com/ilyaglow/dor)
+[![Build Status](https://travis-ci.org/ilyaglow/dor.svg?branch=master)](https://travis-ci.org/ilyaglow/dor)
+[![](https://godoc.org/github.com/ilyaglow/dor?status.svg)](http://godoc.org/github.com/ilyaglow/dor)
 
 DOR - Domain Ranker
 -------------------
 
-Fast HTTP service (build on top of amazing [iris framework](https://github.com/kataras/iris)) which shows a specified domain rank from following providers:
+Fast HTTP service (build on top of amazing
+[iris framework](https://github.com/kataras/iris)) which shows a specified
+domain rank from following providers:
 - [Alexa](https://www.alexa.com/topsites)
 - [Majestic](https://blog.majestic.com/development/alexa-top-1-million-sites-retired-heres-majestic-million/)
 - [Umbrella OpenDNS](https://umbrella.cisco.com/blog/2016/12/14/cisco-umbrella-1-million/)
 - [Statvoo](https://statvoo.com/top/sites)
 - [Open PageRank](https://www.domcop.com/top-10-million-domains)
 
-Can be used as a base for a domain categorization / network filters / suspicious domain detection.
+Can be used as a base for a domain categorization / network filters /
+suspicious domain detection.
 
 Data is updated once a day automatically.
 
-Right now only in-memory and MongoDB storages are supported, but _Dor_ was built with flexibility in mind, so you can easily add the storage you like by implementing _Storage_ interface.
+Right now only in-memory and MongoDB storages are supported, but _Dor_ was
+built with flexibility in mind, so you can easily add the storage you like by
+implementing _Storage_ interface.
 
 ## Installation
 
@@ -55,7 +61,9 @@ Usage of dor-web-inmemory:
 
 ## Docker usage
 
-Project has [docker-compose](docker-compose.yml) that uses MongoDB as a storage. Make changes here accordingly if any (folder for data persistence, ports etc).
+Project has [docker-compose](docker-compose.yml) that uses MongoDB as a
+storage. Make changes here accordingly if any (folder for data persistence,
+ports etc).
 
 ```
 docker-compose up -d
@@ -64,7 +72,7 @@ docker-compose up -d
 
 ## Client usage
 
-```
+```sh
 $: curl 127.0.0.1:8080/rank/github.com
 
 {
