@@ -1,23 +1,28 @@
 package dorweb
 
 import (
+	"encoding/json"
 	"log"
+	"net/http"
 
 	"github.com/ilyaglow/dor"
-	"github.com/kataras/iris"
+	"github.com/julienschmidt/httprouter"
 )
 
 // Serve represents a web interaction with the DomainRank
 func Serve(address string, d *dor.App) {
-	app := iris.New()
-	app.Get("/rank/{domain:string}", func(ctx iris.Context) {
-		r, err := d.Find(ctx.Params().Get("domain"))
+	router := httprouter.New()
+	router.GET("/rank/:domain", func(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
+		result, err := d.Find(ps.ByName("domain"))
 		if err != nil {
-			ctx.StatusCode(iris.StatusBadRequest)
-		} else {
-			ctx.JSON(r)
+			http.Error(w, err.Error(), http.StatusBadRequest)
+			return
+		}
+
+		enc := json.NewEncoder(w)
+		if err := enc.Encode(result); err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
 		}
 	})
-
-	log.Fatal(app.Run(iris.Addr(address), iris.WithCharset("UTF-8")))
+	log.Fatal(http.ListenAndServe(address, router))
 }

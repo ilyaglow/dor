@@ -4,9 +4,7 @@
 DOR - Domain Ranker
 -------------------
 
-Fast HTTP service (build on top of amazing
-[iris framework](https://github.com/kataras/iris)) which shows a specified
-domain rank from following providers:
+Fast HTTP service which shows a specified domain rank from following providers:
 - [Alexa](https://www.alexa.com/topsites)
 - [Majestic](https://blog.majestic.com/development/alexa-top-1-million-sites-retired-heres-majestic-million/)
 - [Umbrella OpenDNS](https://umbrella.cisco.com/blog/2016/12/14/cisco-umbrella-1-million/)
@@ -53,10 +51,8 @@ Or if you want just in-memory database:
 dor-web-inmemory -h
 
 Usage of dor-web-inmemory:
-  -host string
-    	IP-address to bind (default "127.0.0.1")
-  -port string
-    	Port to bind (default "8080")
+  -listen string
+    	Listen address to bind (default "127.0.0.1:8080")
 ```
 
 ## Docker usage
