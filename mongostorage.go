@@ -39,8 +39,8 @@ func NewMongoStorage(u string, db string, col string, size int, w int, ret bool)
 		Background: true,
 		Sparse:     true,
 		// Capped:     true,
-		// MaxBytes:   5368709120, // 5Gb
-		// MaxDocs:    100000000,  // 100M
+		// MaxBytes:   10737418240, // 10Gb
+		// MaxDocs:    200000000,   // 200M
 	}
 
 	if ret {
@@ -91,12 +91,6 @@ func (m *MongoStorage) Put(c <-chan Rank, s string, t time.Time) error {
 	wg.Wait()
 	return nil
 }
-
-// func (m *MongoStorage) getSimple(d string) ([]ExtendedRank, error) {
-// }
-//
-// func (m *MongoStorage) getMajestic(d string) ([]MajesticRank, error) {
-// }
 
 // Get implements Storage interface method Get
 func (m *MongoStorage) Get(d string, sources ...string) ([]Rank, error) {
@@ -150,7 +144,7 @@ func (m *MongoStorage) GetMore(d string, lps int, sources ...string) ([]Rank, er
 			}
 		}
 	} else {
-		query = c.Find(bson.M{"domain": d}).Sort("-last_update").Limit(docsLimit)
+		query = c.Find(bson.M{"domain": d}).Sort("-last_update").Limit(lps)
 		items := query.Iter()
 		for items.Next(&e) {
 			ranks = append(ranks, e)
