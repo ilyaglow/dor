@@ -2,7 +2,6 @@ package main
 
 import (
 	"flag"
-	"fmt"
 	"log"
 	"time"
 
@@ -13,19 +12,18 @@ import (
 const duration = time.Hour * 24
 
 func main() {
-	bindAddr := flag.String("host", "127.0.0.1", "IP-address to bind")
-	bindPort := flag.String("port", "8080", "Port to bind")
+	bindAddr := flag.String("listen", "127.0.0.1:8080", "Listen address and port to bind")
 	flag.Parse()
-	hp := fmt.Sprintf("%s:%s", *bindAddr, *bindPort)
-
-	d, err := dor.New("mongodb", "", false)
+	d, err := dor.New("memory", "", false)
 	if err != nil {
 		panic(err)
 	}
 
-	if err := d.FillByTimer(duration); err != nil {
-		log.Fatal(err)
-	}
+	go func() {
+		if err := d.FillByTimer(duration); err != nil {
+			log.Fatal(err)
+		}
+	}()
 
-	dorweb.Serve(hp, d)
+	dorweb.Serve(*bindAddr, d)
 }
