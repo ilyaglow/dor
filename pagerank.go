@@ -19,9 +19,9 @@ func NewPageRank() *PageRankIngester {
 }
 
 // Do implements Ingester Do func with the data from DomCop
-func (in *PageRankIngester) Do() (chan Rank, error) {
+func (in *PageRankIngester) Do() (chan *Entry, error) {
 	in.Timestamp = time.Now().UTC()
-	ch := make(chan Rank)
+	ch := make(chan *Entry)
 
 	go chanFromURLZip(pageRankTop10M, in.Description, ch)
 

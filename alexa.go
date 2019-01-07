@@ -24,9 +24,9 @@ func NewAlexa() *AlexaIngester {
 }
 
 // Do implements Ingester Do func with the data from Alexa Top 1M CSV file
-func (in *AlexaIngester) Do() (chan Rank, error) {
+func (in *AlexaIngester) Do() (chan *Entry, error) {
 	in.Timestamp = time.Now().UTC()
-	ch := make(chan Rank)
+	ch := make(chan *Entry)
 
 	go chanFromURLZip(alexaTop1M, in.Description, ch)
 

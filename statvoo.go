@@ -25,9 +25,9 @@ func NewStatvoo() *StatvooIngester {
 }
 
 // Do implements Ingester Do func with the data from Statvoo Top 1M
-func (in *StatvooIngester) Do() (chan Rank, error) {
+func (in *StatvooIngester) Do() (chan *Entry, error) {
 	in.Timestamp = time.Now().UTC()
-	ch := make(chan Rank)
+	ch := make(chan *Entry)
 
 	go chanFromURLZip(statvooTop1M, in.Description, ch)
 

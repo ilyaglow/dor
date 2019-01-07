@@ -77,7 +77,7 @@ func NewMongoStorage(u string, db string, col string, size int, w int, ret bool)
 // Put implements Storage interface method Put
 //	s - is the data source
 //	t - is the data datetime
-func (m *MongoStorage) Put(c <-chan Rank, s string, t time.Time) error {
+func (m *MongoStorage) Put(c <-chan *Entry, s string, t time.Time) error {
 	var wg sync.WaitGroup
 	wg.Add(m.wNum)
 
@@ -93,13 +93,13 @@ func (m *MongoStorage) Put(c <-chan Rank, s string, t time.Time) error {
 }
 
 // Get implements Storage interface method Get
-func (m *MongoStorage) Get(d string, sources ...string) ([]Rank, error) {
+func (m *MongoStorage) Get(d string, sources ...string) ([]*Entry, error) {
 	s := m.sess.Copy()
 	c := s.DB(m.db).C(m.c)
 
 	var query *mgo.Query
-	var ranks []Rank
-	e := ExtendedRank{}
+	var ranks []*Entry
+	var e Entry
 
 	if len(sources) > 0 {
 		for i := range sources {
@@ -108,13 +108,13 @@ func (m *MongoStorage) Get(d string, sources ...string) ([]Rank, error) {
 				log.Println(err)
 				continue
 			}
-			ranks = append(ranks, e)
+			ranks = append(ranks, &e)
 		}
 	} else {
 		query = c.Find(bson.M{"domain": d}).Sort("-last_update").Limit(docsLimit)
 		items := query.Iter()
 		for items.Next(&e) {
-			ranks = append(ranks, e)
+			ranks = append(ranks, &e)
 		}
 	}
 
@@ -122,13 +122,13 @@ func (m *MongoStorage) Get(d string, sources ...string) ([]Rank, error) {
 }
 
 // GetMore implements Storage GetMore function
-func (m *MongoStorage) GetMore(d string, lps int, sources ...string) ([]Rank, error) {
+func (m *MongoStorage) GetMore(d string, lps int, sources ...string) ([]*Entry, error) {
 	s := m.sess.Copy()
 	c := s.DB(m.db).C(m.c)
 
 	var query *mgo.Query
-	var ranks []Rank
-	e := ExtendedRank{}
+	var ranks []*Entry
+	var e Entry
 
 	// check if lps is not bigger than allowed
 	if lps > docsLimit {
@@ -140,21 +140,21 @@ func (m *MongoStorage) GetMore(d string, lps int, sources ...string) ([]Rank, er
 			query = c.Find(bson.M{"domain": d, "source": sources[i]}).Sort("-last_update").Limit(lps)
 			items := query.Iter()
 			for items.Next(&e) {
-				ranks = append(ranks, e)
+				ranks = append(ranks, &e)
 			}
 		}
 	} else {
 		query = c.Find(bson.M{"domain": d}).Sort("-last_update").Limit(lps)
 		items := query.Iter()
 		for items.Next(&e) {
-			ranks = append(ranks, e)
+			ranks = append(ranks, &e)
 		}
 	}
 
 	return ranks, nil
 }
 
-func (m *MongoStorage) send(c <-chan Rank, s string, t time.Time) error {
+func (m *MongoStorage) send(c <-chan *Entry, s string, t time.Time) error {
 	mc := m.sess.Copy()
 	col := mc.DB(m.db).C(m.c)
 
@@ -163,14 +163,7 @@ func (m *MongoStorage) send(c <-chan Rank, s string, t time.Time) error {
 	i := 0
 
 	for r := range c {
-		extr := &ExtendedRank{
-			Domain:     r.GetDomain(),
-			Rank:       r.GetRank(),
-			Source:     s,
-			LastUpdate: t,
-		}
-
-		bulk.Insert(extr)
+		bulk.Insert(r)
 		i++
 
 		if i == m.size {
