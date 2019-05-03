@@ -68,10 +68,11 @@ func (in *MajesticIngester) process(rc chan *Entry) {
 	defer in.resp.Body.Close()
 
 	scanner := bufio.NewScanner(in.resp.Body)
+	scanner.Text() // skip header
 
 	for scanner.Scan() {
-		scanner.Text() // skip header
-		parts := strings.Split(scanner.Text(), ",")
+		line := scanner.Text()
+		parts := strings.Split(line, ",")
 		if len(parts) != 12 {
 			log.Println("majestic: wrong line in a CSV")
 			continue
@@ -80,7 +81,7 @@ func (in *MajesticIngester) process(rc chan *Entry) {
 		rc <- &Entry{
 			Rank:    strToUint(parts[0]),
 			Domain:  parts[2],
-			RawData: []byte(strings.Join(parts, ",")),
+			RawData: []byte(line),
 		}
 	}
 
