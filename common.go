@@ -89,14 +89,14 @@ func mapFromURLZip(url string, desc string) (LookupMap, error) {
 // chanFromURLZip translates a common formatted CSV:
 //	rank,domain
 // that is ZIP packed and hosted on a specified url
-func chanFromURLZip(url string, desc string, rc chan Rank) {
+func chanFromURLZip(url string, desc string, rc chan *Entry) {
 	n, err := downloadURL(url, desc)
 	if err != nil {
 		close(rc)
 		log.Println(err)
 		return
 	}
-	log.Printf("%s downloaded successfully", url)
+	log.Printf("%s: %s downloaded successfully", desc, url)
 
 	z, c, err := zipContent(n)
 	if err != nil {
@@ -111,15 +111,17 @@ func chanFromURLZip(url string, desc string, rc chan Rank) {
 
 	scanner := bufio.NewScanner(*c)
 	for scanner.Scan() {
-		parts := strings.Split(scanner.Text(), ",")
+		line := scanner.Text()
+		parts := strings.Split(line, ",")
 		if strings.Contains(parts[0], "\"") || strings.Contains(parts[1], "\"") {
 			parts[0] = strings.Trim(parts[0], "\"")
 			parts[1] = strings.Trim(parts[1], "\"")
 		}
 
-		rc <- &SimpleRank{
-			Rank:   strToUint(parts[0]),
-			Domain: parts[1],
+		rc <- &Entry{
+			Rank:    strToUint(parts[0]),
+			Domain:  parts[1],
+			RawData: []byte(line),
 		}
 	}
 

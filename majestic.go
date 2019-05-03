@@ -64,32 +64,24 @@ func (in *MajesticIngester) fetch(url string) error {
 }
 
 // process represents filling the map with response body data
-func (in *MajesticIngester) process(rc chan Rank) {
+func (in *MajesticIngester) process(rc chan *Entry) {
 	defer in.resp.Body.Close()
 
 	scanner := bufio.NewScanner(in.resp.Body)
+	scanner.Text() // skip header
 
 	for scanner.Scan() {
-		scanner.Text() // skip header
-		parts := strings.Split(scanner.Text(), ",")
+		line := scanner.Text()
+		parts := strings.Split(line, ",")
 		if len(parts) != 12 {
 			log.Println("majestic: wrong line in a CSV")
 			continue
 		}
 
-		rc <- &MajesticRank{
-			GlobalRank:     strToUint(parts[0]),
-			TLDRank:        strToUint(parts[1]),
-			Domain:         parts[2],
-			TLD:            parts[3],
-			RefSubNets:     strToUint(parts[4]),
-			RefIPs:         strToUint(parts[5]),
-			IDNDomain:      parts[6],
-			IDNTLD:         parts[7],
-			PrevGlobalRank: strToUint(parts[8]),
-			PrevTLDRank:    strToUint(parts[9]),
-			PrevRefSubNets: strToUint(parts[10]),
-			PrevRefIPs:     strToUint(parts[11]),
+		rc <- &Entry{
+			Rank:    strToUint(parts[0]),
+			Domain:  parts[2],
+			RawData: []byte(line),
 		}
 	}
 
@@ -97,9 +89,9 @@ func (in *MajesticIngester) process(rc chan Rank) {
 }
 
 // Do implements Ingester interface with the data from Majestic CSV file
-func (in *MajesticIngester) Do() (chan Rank, error) {
+func (in *MajesticIngester) Do() (chan *Entry, error) {
 	in.Timestamp = time.Now().UTC()
-	ch := make(chan Rank)
+	ch := make(chan *Entry)
 
 	if err := in.fetch(majesticTop1M); err != nil {
 		return nil, err

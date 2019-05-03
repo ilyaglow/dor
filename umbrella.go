@@ -25,9 +25,9 @@ func NewUmbrella() *UmbrellaIngester {
 }
 
 // Do implements Ingester Do func with the data from OpenDNS
-func (in *UmbrellaIngester) Do() (chan Rank, error) {
+func (in *UmbrellaIngester) Do() (chan *Entry, error) {
 	in.Timestamp = time.Now().UTC()
-	ch := make(chan Rank)
+	ch := make(chan *Entry)
 
 	go chanFromURLZip(umbrellaTop1M, in.Description, ch)
 

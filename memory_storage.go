@@ -27,8 +27,8 @@ func (mc *memoryCollection) get(d string) (rank uint, presence bool) {
 }
 
 // Get implements Get method of the Storage interface
-func (ms *MemoryStorage) Get(d string, sources ...string) ([]Rank, error) {
-	var ranks []Rank
+func (ms *MemoryStorage) Get(d string, sources ...string) ([]*Entry, error) {
+	var ranks []*Entry
 	for k := range ms.Maps {
 		if len(sources) > 0 && !sliceContains(sources, ms.Maps[k].Description) {
 			continue
@@ -39,7 +39,7 @@ func (ms *MemoryStorage) Get(d string, sources ...string) ([]Rank, error) {
 			continue
 		}
 
-		r := ExtendedRank{
+		r := &Entry{
 			Domain:     d,
 			Rank:       rank,
 			LastUpdate: ms.Maps[k].Timestamp,
@@ -53,16 +53,16 @@ func (ms *MemoryStorage) Get(d string, sources ...string) ([]Rank, error) {
 }
 
 // GetMore is not supported for the memory storage
-func (ms *MemoryStorage) GetMore(d string, lps int, sources ...string) ([]Rank, error) {
+func (ms *MemoryStorage) GetMore(d string, lps int, sources ...string) ([]*Entry, error) {
 	return ms.Get(d, sources...)
 }
 
 // Put implements Put method of the Storage interface
-func (ms *MemoryStorage) Put(c <-chan Rank, s string, t time.Time) error {
+func (ms *MemoryStorage) Put(c <-chan *Entry, s string, t time.Time) error {
 	lm := make(LookupMap)
 
 	for r := range c {
-		lm[r.GetDomain()] = r.GetRank()
+		lm[r.Domain] = r.Rank
 	}
 
 	if _, ok := ms.Maps[s]; ok {
