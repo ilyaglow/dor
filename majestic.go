@@ -46,10 +46,15 @@ func (in *MajesticIngester) process(rc chan *Entry) {
 	defer in.resp.Body.Close()
 
 	scanner := bufio.NewScanner(in.resp.Body)
-	scanner.Text() // skip header
 
+	var i int
 	for scanner.Scan() {
 		line := scanner.Text()
+		if i < 1 {
+			i++
+			continue
+		}
+
 		parts := strings.Split(line, ",")
 		if len(parts) != 12 {
 			log.Println("majestic: wrong line in a CSV")

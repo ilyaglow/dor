@@ -23,7 +23,7 @@ func (in *PageRankIngester) Do() (chan *Entry, error) {
 	in.Timestamp = time.Now().UTC()
 	ch := make(chan *Entry)
 
-	go chanFromURLZip(pageRankTop10M, in.Description, ch, ",", 0)
+	go chanFromURLZip(pageRankTop10M, in.Description, ch, ",", 2)
 
 	return ch, nil
 }
