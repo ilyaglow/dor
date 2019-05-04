@@ -1,27 +1,28 @@
 package main
 
 import (
-	"fmt"
+	"flag"
 	"log"
 	"os"
 
 	"github.com/ilyaglow/dor"
 	"github.com/ilyaglow/dor/web"
+	"github.com/peterbourgon/ff"
 )
 
 func main() {
-	var port string
-	if port = os.Getenv("DOR_PORT"); port == "" {
-		port = "8080"
-	}
-	port = fmt.Sprintf(":%s", port)
+	fs := flag.NewFlagSet("DOR", flag.ExitOnError)
+	var (
+		storage  = fs.String("storage", "clickhouse", "storage type")
+		location = fs.String("storage-url", "", "url of the storage")
+		listen   = fs.String("listen-addr", ":8080", "listen address")
+	)
+	ff.Parse(fs, os.Args[1:], ff.WithEnvVarPrefix("DOR"))
 
-	storageURL := os.Getenv("DOR_STORAGE_URL")
-
-	d, err := dor.New(os.Getenv("DOR_STORAGE"), storageURL, false)
+	d, err := dor.New(*storage, *location, false)
 	if err != nil {
 		panic(err)
 	}
 
-	log.Fatal(dorweb.Serve(port, d))
+	log.Fatal(dorweb.Serve(*listen, d))
 }
