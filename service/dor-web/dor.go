@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"log"
 	"os"
 
 	"github.com/ilyaglow/dor"
@@ -24,4 +25,3 @@ func main() {
 
 	log.Fatal(dorweb.Serve(port, d))
 }
-
