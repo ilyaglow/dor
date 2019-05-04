@@ -16,48 +16,33 @@ suspicious domain detection.
 
 Data is updated once a day automatically.
 
-Right now only in-memory and MongoDB storages are supported, but _Dor_ was
-built with flexibility in mind, so you can easily add the storage you like by
-implementing _Storage_ interface.
+Supported types of storages:
+* Clickhouse (recommended)
+* MongoDB
+* In-Memory
+
+You can easily add the storage you like by implementing _Storage_ interface.
 
 ## Installation
 
 Check out the [releases page](https://github.com/ilyaglow/dor/releases).
 
-### Manual build
-
-**dor** supports **Go 1.9 and later**
-
-```
-go get -u github.com/ilyaglow/dor
-go install ./...
-```
-
 ## Web service usage
 
-Use MongoDB storage located at `mongoserver` and bind to port `8080`
+Use Clickhouse storage located at `clickhouse` and bind to port `8080`
 ```
-DOR_MONGO_URL=mongoserver DOR_PORT=8080 dor-web-mongodb
+DOR_STORAGE=clickhouse DOR_STORAGE_URL=tcp://clickhouse:9000 DOR_PORT=8080 dor-web
 ```
 
 ## Fill database with the data
 
 ```
-DOR_MONGO_URL=mongoserver go run cmd/dor-insert-mongo/dor-insert-mongo
-```
-
-Or if you want just in-memory database:
-```
-dor-web-inmemory -h
-
-Usage of dor-web-inmemory:
-  -listen string
-    	Listen address to bind (default "127.0.0.1:8080")
+DOR_STORAGE_URL=tcp://clickhouse:9000 DOR_STORAGE=clickhouse go run cmd/dor-insert/dor-insert
 ```
 
 ## Docker usage
 
-Project has [docker-compose](docker-compose.yml) that uses MongoDB as a
+Project has [docker-compose](docker-compose.yml) that uses Clickhouse as a
 storage. Make changes here accordingly if any (folder for data persistence,
 ports etc).
 
@@ -77,32 +62,37 @@ $: curl 127.0.0.1:8080/rank/github.com
     {
       "domain": "github.com",
       "rank": 33,
-      "last_update": "2018-01-11T18:01:27.251103268Z",
-      "source": "majestic"
+      "date": "2018-01-11T18:01:27.251103268Z",
+      "source": "majestic",
+      "raw": "29,23,github.com,com,179825,518189,github.com,com,29,23,179994,518726"
     },
     {
       "domain": "github.com",
       "rank": 66,
-      "last_update": "2018-01-11T18:01:27.97067767Z",
-      "source": "statvoo"
+      "date": "2018-01-11T18:01:27.97067767Z",
+      "source": "statvoo",
+      "raw": ""
     },
     {
       "domain": "github.com",
       "rank": 72,
-      "last_update": "2018-01-11T18:04:26.267833256Z",
-      "source": "alexa"
+      "date": "2018-01-11T18:04:26.267833256Z",
+      "source": "alexa",
+      "raw": ""
     },
     {
       "domain": "github.com",
       "rank": 2367,
       "last_update": "2018-01-11T18:06:50.866600102Z",
-      "source": "umbrella"
+      "source": "umbrella",
+      "raw": ""
     },
     {
       "domain": "github.com",
       "rank": 115,
       "last_update": "2018-03-27T17:01:13.535Z",
-      "source": "pagerank"
+      "source": "pagerank",
+      "raw": ""
     }
   ],
   "timestamp": "2018-01-11T18:07:09.186271429Z"
