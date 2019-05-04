@@ -11,6 +11,7 @@ Fast HTTP service which shows a specified domain rank from following providers:
 - [Statvoo](https://statvoo.com/top/sites)
 - [Open PageRank](https://www.domcop.com/top-10-million-domains)
 - [Tranco List](https://tranco-list.eu/)
+- [Quantcast](https://www.quantcast.com/top-sites/)
 
 Can be used as a base for a domain categorization / network filters /
 suspicious domain detection.
@@ -105,6 +106,13 @@ $: curl 127.0.0.1:8080/rank/github.com
       "rank": 68,
       "last_update": "2018-03-27T17:01:13.535Z",
       "source": "tranco",
+      "raw": ""
+    },
+    {
+      "domain": "github.com",
+      "rank": 114,
+      "date": "2019-05-04T00:00:00Z",
+      "source": "quantcast",
       "raw": ""
     }
   ],
