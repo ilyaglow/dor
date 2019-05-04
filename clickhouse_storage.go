@@ -12,14 +12,15 @@ import (
 
 const (
 	createStmt = `
-		CREATE IF NOT EXISTS %s (
+		CREATE TABLE IF NOT EXISTS %s (
 			rank	UInt32,
 			domain	String,
 			rawdata	String,
 			source	String,
 			date	Date DEFAULT today()
-		) engine=MergeTree(date, (domain, source), 8192)
+		) ENGINE = MergeTree
 		PARTITION BY toYYYYMM(date)
+		ORDER BY (domain, date)
 	`
 	insertStmt = `
 		INSERT INTO %s (rank, domain, rawdata, source) VALUES (?, ?, ?, ?)
@@ -91,7 +92,7 @@ func (c *ClickhouseStorage) send(entries <-chan *Entry, s string) error {
 			e.Rank,
 			e.Domain,
 			e.RawData,
-			e.Source,
+			s,
 		)
 		if err != nil {
 			return err
@@ -128,26 +129,37 @@ func (c *ClickhouseStorage) Get(d string, sources ...string) ([]*Entry, error) {
 	var (
 		queries []string
 		sface   []interface{}
+		slen    int
+		y       int
 	)
 	selectQuery := fmt.Sprintf(`
 		SELECT rank, domain, rawdata, source, date
 		FROM %s
-		WHERE source=?
+		WHERE (domain=? AND source=?)
 		ORDER BY date DESC
 		LIMIT 1
 		`, c.table)
 
-	for i, s := range sources {
-		queries = append(queries, selectQuery)
-		sface[i] = s
-	}
-
 	// if sources are not specified include all of them
 	if len(sources) == 0 {
+		slen = len(ingesters)
+		sface = make([]interface{}, slen*2)
 		for i, s := range ingesters {
+			y = i * 2
 			queries = append(queries, selectQuery)
-			sface[i] = s.GetDesc()
+			sface[y] = d
+			sface[y+1] = s.GetDesc()
 		}
+	} else {
+		slen = len(sources)
+		sface = make([]interface{}, slen*2)
+	}
+
+	for i, s := range sources {
+		y = i * 2
+		queries = append(queries, selectQuery)
+		sface[y] = d
+		sface[y+1] = s
 	}
 
 	rows, err := c.db.Query(strings.Join(queries, " UNION ALL "), sface...)
@@ -157,7 +169,7 @@ func (c *ClickhouseStorage) Get(d string, sources ...string) ([]*Entry, error) {
 	defer rows.Close()
 
 	var (
-		rank                    uint
+		rank                    uint32
 		domain, rawdata, source string
 		date                    string
 		entries                 []*Entry
@@ -168,7 +180,7 @@ func (c *ClickhouseStorage) Get(d string, sources ...string) ([]*Entry, error) {
 			return entries, err
 		}
 
-		d, err := time.Parse("2006-01-02", date)
+		d, err := time.Parse("2006-01-02T15:04:05Z", date)
 		if err != nil {
 			return entries, err
 		}
