@@ -40,10 +40,10 @@ func (ms *MemoryStorage) Get(d string, sources ...string) ([]*Entry, error) {
 		}
 
 		r := &Entry{
-			Domain:     d,
-			Rank:       rank,
-			LastUpdate: ms.Maps[k].Timestamp,
-			Source:     ms.Maps[k].Description,
+			Domain: d,
+			Rank:   rank,
+			Date:   ms.Maps[k].Timestamp,
+			Source: ms.Maps[k].Description,
 		}
 
 		ranks = append(ranks, r)

@@ -7,6 +7,11 @@ import (
 	"time"
 )
 
+const (
+	batchSize = 50000
+	tblName   = "ranks"
+)
+
 // Ingester fetches data and uploads it to the Storage
 type Ingester interface {
 	Do() (chan *Entry, error) // returns a channel for consumers
@@ -15,9 +20,8 @@ type Ingester interface {
 
 // Storage represents an interface to store and query ranks.
 type Storage interface {
-	Put(<-chan *Entry, string, time.Time) error                          // Put is usually a bulk inserter from the channel that works in a goroutine, second argument is a Source of the data and third is the last update time
-	Get(domain string, sources ...string) ([]*Entry, error)              // Get is a simple getter for the latest rank of the domain in a particular domain rank provider
-	GetMore(domain string, lps int, sources ...string) ([]*Entry, error) // GetAll is a getter that retreives historical data on the domain limited by lps (limit per source)
+	Put(<-chan *Entry, string, time.Time) error             // Put is usually a bulk inserter from the channel that works in a goroutine, second argument is a Source of the data and third is the last update time.
+	Get(domain string, sources ...string) ([]*Entry, error) // Get is a simple getter for the latest rank of the domain in a particular domain rank provider or all of them if nothing selected.
 }
 
 // Entry is a SimpleRank with extended fields
@@ -48,13 +52,20 @@ type App struct {
 //	stl - storage location string
 //	keep - keep new data or overwrite old one (always false for MemoryStorage)
 func New(stn string, stl string, keep bool) (*App, error) {
-	var s Storage
-	var err error
+	var (
+		s   Storage
+		err error
+	)
 	switch stn {
+	case "clickhouse":
+		s, err = NewClickhouseStorage(stl, tblName, batchSize)
+		if err != nil {
+			return nil, err
+		}
 	case "memory":
 		s = &MemoryStorage{make(map[string]*memoryCollection)}
 	case "mongodb":
-		s, err = NewMongoStorage(stl, "dor", "ranks", 50000, 5, keep)
+		s, err = NewMongoStorage(stl, "dor", tblName, batchSize, 5, keep)
 		if err != nil {
 			return nil, err
 		}
