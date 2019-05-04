@@ -33,18 +33,18 @@ Check out the [releases page](https://github.com/ilyaglow/dor/releases).
 
 Use Clickhouse storage located at `clickhouse` and bind to port `8080`:
 ```
-DOR_STORAGE=clickhouse \
-DOR_STORAGE_URL=tcp://clickhouse:9000 \
-DOR_PORT=8080 \
-go run service/dor-http/dor.go
+go run service/dor-http/dor.go \
+    -storage=clickhouse \
+    -storage-url=tcp://clickhouse:9000 \
+    -listen-addr=:8080
 ```
 
 ## Fill database with the data
 
 ```
-DOR_STORAGE=clickhouse \
-DOR_STORAGE_URL=tcp://clickhouse:9000 \
-go run cmd/dor-insert/dor-insert
+go run cmd/dor-insert/dor-insert \
+    -storage=clickhouse \
+    -storage-url=tcp://clickhouse:9000
 ```
 
 ## Docker usage
