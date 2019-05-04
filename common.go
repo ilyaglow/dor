@@ -79,7 +79,7 @@ func mapFromURLZip(url string, desc string) (LookupMap, error) {
 		parts := strings.Split(scanner.Text(), ",")
 		pos, d := parts[0], parts[1]
 		pint, _ := strconv.ParseInt(pos, 10, 32)
-		puint := uint(pint)
+		puint := uint32(pint)
 		m[d] = puint
 	}
 
@@ -119,16 +119,15 @@ func chanFromURLZip(url string, desc string, rc chan *Entry) {
 		}
 
 		rc <- &Entry{
-			Rank:    strToUint(parts[0]),
-			Domain:  parts[1],
-			RawData: line,
+			Rank:   strToUint(parts[0]),
+			Domain: parts[1],
 		}
 	}
 
 	close(rc)
 }
 
-func strToUint(s string) uint {
+func strToUint(s string) uint32 {
 	pint, _ := strconv.ParseInt(s, 10, 32)
-	return uint(pint)
+	return uint32(pint)
 }

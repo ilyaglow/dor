@@ -27,7 +27,7 @@ type Storage interface {
 // Entry is a SimpleRank with extended fields
 type Entry struct {
 	Domain  string    `json:"domain" db:"domain" bson:"domain"`
-	Rank    uint      `json:"rank" db:"rank" bson:"rank"`
+	Rank    uint32    `json:"rank" db:"rank" bson:"rank"`
 	Date    time.Time `json:"date" bson:"date"`
 	Source  string    `json:"source" bson:"source"`
 	RawData string    `json:"raw" bson:"raw"`
@@ -91,12 +91,12 @@ func (d *App) Fill() error {
 
 			ch, err := ing.Do()
 			if err != nil {
-				log.Printf("Failed to enrich %s: %s", ing.GetDesc(), err.Error())
+				log.Printf("failed to enrich %s: %s", ing.GetDesc(), err.Error())
 				return
 			}
 
 			if err := d.Storage.Put(ch, ing.GetDesc(), time.Now().UTC()); err != nil {
-				log.Printf("Failed to insert data to the storage %s: %s", ing.GetDesc(), err.Error())
+				log.Printf("failed to insert data to the storage %s: %s", ing.GetDesc(), err.Error())
 				return
 			}
 

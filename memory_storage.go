@@ -6,7 +6,7 @@ import (
 )
 
 // LookupMap represents map with domain - rank pairs
-type LookupMap map[string]uint
+type LookupMap map[string]uint32
 
 // MemoryCollection is a struct that is capable to hold data
 type memoryCollection struct {
@@ -21,7 +21,7 @@ type MemoryStorage struct {
 	Maps map[string]*memoryCollection
 }
 
-func (mc *memoryCollection) get(d string) (rank uint, presence bool) {
+func (mc *memoryCollection) get(d string) (rank uint32, presence bool) {
 	rank, pr := mc.Map[d]
 	return rank, pr
 }
