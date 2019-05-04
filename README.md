@@ -10,6 +10,7 @@ Fast HTTP service which shows a specified domain rank from following providers:
 - [Umbrella OpenDNS](https://umbrella.cisco.com/blog/2016/12/14/cisco-umbrella-1-million/)
 - [Statvoo](https://statvoo.com/top/sites)
 - [Open PageRank](https://www.domcop.com/top-10-million-domains)
+- [Tranco List](https://tranco-list.eu/)
 
 Can be used as a base for a domain categorization / network filters /
 suspicious domain detection.
@@ -92,6 +93,13 @@ $: curl 127.0.0.1:8080/rank/github.com
       "rank": 115,
       "last_update": "2018-03-27T17:01:13.535Z",
       "source": "pagerank",
+      "raw": ""
+    },
+    {
+      "domain": "github.com",
+      "rank": 68,
+      "last_update": "2018-03-27T17:01:13.535Z",
+      "source": "tranco",
       "raw": ""
     }
   ],

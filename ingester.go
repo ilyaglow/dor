@@ -12,6 +12,7 @@ var ingesters = []Ingester{
 	NewUmbrella(),
 	NewMajestic(),
 	NewPageRank(),
+	NewTranco(),
 }
 
 // IngesterConf represents a top popular domains provider configuration.
@@ -22,6 +23,7 @@ var ingesters = []Ingester{
 //	- Umbrella Top 1 Million
 //	- Statvoo Top 1 Million
 //	- PageRank Top 10 Millions
+//	- Tranco Top 1 Million
 type IngesterConf struct {
 	sync.Mutex
 	Description string
