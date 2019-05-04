@@ -81,7 +81,7 @@ func (in *MajesticIngester) process(rc chan *Entry) {
 		rc <- &Entry{
 			Rank:    strToUint(parts[0]),
 			Domain:  parts[2],
-			RawData: []byte(line),
+			RawData: line,
 		}
 	}
 

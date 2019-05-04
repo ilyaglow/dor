@@ -21,6 +21,7 @@ var ingesters = []Ingester{
 //	- Majestic Top 1 Million
 //	- Umbrella Top 1 Million
 //	- Statvoo Top 1 Million
+//	- PageRank Top 10 Millions
 type IngesterConf struct {
 	sync.Mutex
 	Description string

@@ -22,11 +22,11 @@ type Storage interface {
 
 // Entry is a SimpleRank with extended fields
 type Entry struct {
-	Domain     string    `json:"domain" db:"domain" bson:"domain"`
-	Rank       uint      `json:"rank" db:"rank" bson:"rank"`
-	LastUpdate time.Time `json:"last_update" bson:"last_update"`
-	Source     string    `json:"source" bson:"source"`
-	RawData    []byte    `json:"raw" bson:"raw"`
+	Domain  string    `json:"domain" db:"domain" bson:"domain"`
+	Rank    uint      `json:"rank" db:"rank" bson:"rank"`
+	Date    time.Time `json:"date" bson:"date"`
+	Source  string    `json:"source" bson:"source"`
+	RawData string    `json:"raw" bson:"raw"`
 }
 
 // FindResponse is a find request response.

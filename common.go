@@ -121,7 +121,7 @@ func chanFromURLZip(url string, desc string, rc chan *Entry) {
 		rc <- &Entry{
 			Rank:    strToUint(parts[0]),
 			Domain:  parts[1],
-			RawData: []byte(line),
+			RawData: line,
 		}
 	}
 
