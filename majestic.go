@@ -21,22 +21,6 @@ type MajesticIngester struct {
 	resp *http.Response
 }
 
-// MajesticRank implements Rank interface
-type MajesticRank struct {
-	GlobalRank     uint   `json:"rank" bson:"rank"`
-	TLDRank        uint   `json:"tld_rank" bson:"tld_rank"`
-	Domain         string `json:"domain" bson:"domain"`
-	TLD            string `json:"tld" bson:"tld"`
-	RefSubNets     uint   `json:"ref_sub_nets" bson:"ref_sub_nets"`
-	RefIPs         uint   `json:"ref_ips" bson:"ref_ips"`
-	IDNDomain      string `json:"idn_domain" bson:"idn_domain"`
-	IDNTLD         string `json:"idn_tld" bson:"idn_tld"`
-	PrevGlobalRank uint   `json:"prev_global_rank" bson:"prev_global_rank"`
-	PrevTLDRank    uint   `json:"prev_tld_rank" bson:"prev_tld_rank"`
-	PrevRefSubNets uint   `json:"prev_ref_sub_nets" bson:"prev_ref_sub_nets"`
-	PrevRefIPs     uint   `json:"prev_ref_ips" bson:"prev_ref_ips"`
-}
-
 // NewMajestic bootstraps MajesticIngester
 func NewMajestic() *MajesticIngester {
 	return &MajesticIngester{
@@ -45,12 +29,6 @@ func NewMajestic() *MajesticIngester {
 		},
 	}
 }
-
-// GetDomain is a simple getter for the MajesticRank's domain
-func (m *MajesticRank) GetDomain() string { return m.Domain }
-
-// GetRank is a simple getter for the MajesticRank's rank
-func (m *MajesticRank) GetRank() uint { return m.GlobalRank }
 
 // fetch send request to server with the data
 func (in *MajesticIngester) fetch(url string) error {
