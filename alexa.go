@@ -28,7 +28,7 @@ func (in *AlexaIngester) Do() (chan *Entry, error) {
 	in.Timestamp = time.Now().UTC()
 	ch := make(chan *Entry)
 
-	go chanFromURLZip(alexaTop1M, in.Description, ch)
+	go chanFromURLZip(alexaTop1M, in.Description, ch, ",", 0)
 
 	return ch, nil
 }

@@ -29,7 +29,7 @@ func (in *UmbrellaIngester) Do() (chan *Entry, error) {
 	in.Timestamp = time.Now().UTC()
 	ch := make(chan *Entry)
 
-	go chanFromURLZip(umbrellaTop1M, in.Description, ch)
+	go chanFromURLZip(umbrellaTop1M, in.Description, ch, ",", 0)
 
 	return ch, nil
 }

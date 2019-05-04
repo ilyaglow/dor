@@ -29,7 +29,7 @@ func (in *TrancoIngester) Do() (chan *Entry, error) {
 	in.Timestamp = time.Now().UTC()
 	ch := make(chan *Entry)
 
-	go chanFromURLZip(trancoTop1M, in.Description, ch)
+	go chanFromURLZip(trancoTop1M, in.Description, ch, ",", 0)
 
 	return ch, nil
 }
