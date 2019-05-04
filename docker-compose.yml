@@ -1,26 +1,28 @@
 version: "2"
 services:
   web:
-    image: ilyaglow/dor-web-mongo
+    build: ./service/dor-web/
     restart: always
     depends_on:
-      - mongo
+      - clickhouse
     ports:
       - "8080:8080"
     environment:
-      DOR_MONGO_URL: "mongo"
+      DOR_STORAGE_URL: "tcp://clickhouse:9000"
+      DOR_STORAGE: "clickhouse"
       DOR_PORT: "8080"
 
   insert:
-    image: ilyaglow/dor-insert-mongo
+    build: ./cmd/dor-insert/
     restart: always
     depends_on:
-      - mongo
+      - clickhouse
     environment:
-      DOR_MONGO_URL: "mongo"
+      DOR_STORAGE_URL: "tcp://clickhouse:9000"
+      DOR_STORAGE: "clickhouse"
 
-  mongo:
+  clickhouse:
     restart: always
-    image: mongo:latest
+    image: yandex/clickhouse-server:latest
     volumes:
-      - ./mongodata:/data/db
+      - ./storage:/var/lib/clickhouse

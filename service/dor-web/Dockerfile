@@ -4,8 +4,12 @@ LABEL maintainer "Ilya Glotov <ilya@ilyaglotov.com>" \
 
 ENV CGO_ENABLED 0
 
+COPY dor.go /go/src/dor/dor.go
+
 RUN apk -U --no-cache add git \
-  && go get -v -ldflags="-s -w" github.com/ilyaglow/dor/service/dor-web-mongodb \
+  && cd /go/src/dor \
+  && go get -v . \
+  && go build -ldflags="-s -w" -o /dor \
   && apk del git
 
 FROM alpine:edge
@@ -13,7 +17,7 @@ FROM alpine:edge
 RUN apk -U --no-cache add ca-certificates \
   && adduser -D app
 
-COPY --from=build-env /go/bin/dor-web-mongodb /dor
+COPY --from=build-env /dor /dor
 
 USER app
 
