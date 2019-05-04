@@ -1,36 +1,38 @@
 language: go
 
 go:
-  - "1.11"
   - master
 
 script:
   - go build ./...
 
+env:
+  global:
+    - CGO_ENABLED=0 GO111MODULE=on
+
 before_deploy:
-  - CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -ldflags="-s -w" -a -installsuffix static -o dor-web-mongodb-${TRAVIS_TAG}-amd64 service/dor-web-mongodb/dor-web-mongodb.go
-  - CGO_ENABLED=0 GOOS=linux GOARCH=386 go build -ldflags="-s -w" -a -installsuffix static -o dor-web-mongodb-${TRAVIS_TAG}-386 service/dor-web-mongodb/dor-web-mongodb.go
-  - CGO_ENABLED=0 GOOS=windows GOARCH=386 go build -ldflags="-s -w" -a -installsuffix static -o dor-web-mongodb-${TRAVIS_TAG}-x86.exe service/dor-web-mongodb/dor-web-mongodb.go
-  - CGO_ENABLED=0 GOOS=darwin go build -ldflags="-s -w" -a -installsuffix static -o dor-web-mongodb-${TRAVIS_TAG}-mac service/dor-web-mongodb/dor-web-mongodb.go
-  - CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -ldflags="-s -w" -a -installsuffix static -o dor-insert-mongo-${TRAVIS_TAG}-amd64 cmd/dor-insert-mongo/dor-insert-mongo.go
-  - CGO_ENABLED=0 GOOS=linux GOARCH=386 go build -ldflags="-s -w" -a -installsuffix static -o dor-insert-mongo-${TRAVIS_TAG}-386 cmd/dor-insert-mongo/dor-insert-mongo.go
-  - CGO_ENABLED=0 GOOS=windows GOARCH=386 go build -ldflags="-s -w" -a -installsuffix static -o dor-insert-mongo-${TRAVIS_TAG}-x86.exe cmd/dor-insert-mongo/dor-insert-mongo.go
-  - CGO_ENABLED=0 GOOS=darwin go build -ldflags="-s -w" -a -installsuffix static -o dor-insert-mongo-${TRAVIS_TAG}-mac cmd/dor-insert-mongo/dor-insert-mongo.go
+  - GOOS=linux GOARCH=amd64 go build -ldflags="-s -w" -a -installsuffix static -o dor-web-${TRAVIS_TAG}-amd64 service/dor-web/dor-web.go
+  - GOOS=linux GOARCH=386 go build -ldflags="-s -w" -a -installsuffix static -o dor-web-${TRAVIS_TAG}-386 service/dor-web/dor-web.go
+  - GOOS=windows GOARCH=386 go build -ldflags="-s -w" -a -installsuffix static -o dor-web-${TRAVIS_TAG}-x86.exe service/dor-web/dor-web.go
+  - GOOS=darwin go build -ldflags="-s -w" -a -installsuffix static -o dor-web-${TRAVIS_TAG}-mac service/dor-web/dor-web.go
+  - GOOS=linux GOARCH=amd64 go build -ldflags="-s -w" -a -installsuffix static -o dor-insert-mongo-${TRAVIS_TAG}-amd64 cmd/dor-insert/dor-insert.go
+  - GOOS=linux GOARCH=386 go build -ldflags="-s -w" -a -installsuffix static -o dor-insert-${TRAVIS_TAG}-386 cmd/dor-insert/dor-insert.go
+  - GOOS=windows GOARCH=386 go build -ldflags="-s -w" -a -installsuffix static -o dor-insert-${TRAVIS_TAG}-x86.exe cmd/dor-insert/dor-insert.go
+  - GOOS=darwin go build -ldflags="-s -w" -a -installsuffix static -o dor-insert-${TRAVIS_TAG}-mac cmd/dor-insert/dor-insert.go
 
 deploy:
   provider: releases
   api_key: $GITHUB_TOKEN
   skip_cleanup: true
   file:
-    - dor-web-mongodb-${TRAVIS_TAG}-amd64
-    - dor-web-mongodb-${TRAVIS_TAG}-386
-    - dor-web-mongodb-${TRAVIS_TAG}-x86.exe
-    - dor-web-mongodb-${TRAVIS_TAG}-mac
-    - dor-insert-mongo-${TRAVIS_TAG}-amd64
-    - dor-insert-mongo-${TRAVIS_TAG}-386
-    - dor-insert-mongo-${TRAVIS_TAG}-x86.exe
-    - dor-insert-mongo-${TRAVIS_TAG}-mac
+    - dor-web-${TRAVIS_TAG}-amd64
+    - dor-web-${TRAVIS_TAG}-386
+    - dor-web-${TRAVIS_TAG}-x86.exe
+    - dor-web-${TRAVIS_TAG}-mac
+    - dor-insert-${TRAVIS_TAG}-amd64
+    - dor-insert-${TRAVIS_TAG}-386
+    - dor-insert-${TRAVIS_TAG}-x86.exe
+    - dor-insert-${TRAVIS_TAG}-mac
   on:
     repo: ilyaglow/dor
     tags: true
-    condition: $TRAVIS_GO_VERSION = "1.11"
