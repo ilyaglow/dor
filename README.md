@@ -28,17 +28,22 @@ You can easily add the storage you like by implementing _Storage_ interface.
 
 Check out the [releases page](https://github.com/ilyaglow/dor/releases).
 
-## Web service usage
+## HTTP service usage
 
-Use Clickhouse storage located at `clickhouse` and bind to port `8080`
+Use Clickhouse storage located at `clickhouse` and bind to port `8080`:
 ```
-DOR_STORAGE=clickhouse DOR_STORAGE_URL=tcp://clickhouse:9000 DOR_PORT=8080 dor-web
+DOR_STORAGE=clickhouse \
+DOR_STORAGE_URL=tcp://clickhouse:9000 \
+DOR_PORT=8080 \
+go run service/dor-http/dor.go
 ```
 
 ## Fill database with the data
 
 ```
-DOR_STORAGE_URL=tcp://clickhouse:9000 DOR_STORAGE=clickhouse go run cmd/dor-insert/dor-insert
+DOR_STORAGE=clickhouse \
+DOR_STORAGE_URL=tcp://clickhouse:9000 \
+go run cmd/dor-insert/dor-insert
 ```
 
 ## Docker usage

@@ -11,11 +11,11 @@ env:
     - CGO_ENABLED=0 GO111MODULE=on
 
 before_deploy:
-  - GOOS=linux GOARCH=amd64 go build -ldflags="-s -w" -a -installsuffix static -o dor-web-${TRAVIS_TAG}-amd64 service/dor-web/dor-web.go
-  - GOOS=linux GOARCH=386 go build -ldflags="-s -w" -a -installsuffix static -o dor-web-${TRAVIS_TAG}-386 service/dor-web/dor-web.go
-  - GOOS=windows GOARCH=386 go build -ldflags="-s -w" -a -installsuffix static -o dor-web-${TRAVIS_TAG}-x86.exe service/dor-web/dor-web.go
-  - GOOS=darwin go build -ldflags="-s -w" -a -installsuffix static -o dor-web-${TRAVIS_TAG}-mac service/dor-web/dor-web.go
-  - GOOS=linux GOARCH=amd64 go build -ldflags="-s -w" -a -installsuffix static -o dor-insert-mongo-${TRAVIS_TAG}-amd64 cmd/dor-insert/dor-insert.go
+  - GOOS=linux GOARCH=amd64 go build -ldflags="-s -w" -a -installsuffix static -o dor-http-${TRAVIS_TAG}-amd64 service/dor-http/dor.go
+  - GOOS=linux GOARCH=386 go build -ldflags="-s -w" -a -installsuffix static -o dor-http-${TRAVIS_TAG}-386 service/dor-http/dor.go
+  - GOOS=windows GOARCH=386 go build -ldflags="-s -w" -a -installsuffix static -o dor-http-${TRAVIS_TAG}-x86.exe service/dor-http/dor.go
+  - GOOS=darwin go build -ldflags="-s -w" -a -installsuffix static -o dor-http-${TRAVIS_TAG}-mac service/dor-http/dor.go
+  - GOOS=linux GOARCH=amd64 go build -ldflags="-s -w" -a -installsuffix static -o dor-insert-${TRAVIS_TAG}-amd64 cmd/dor-insert/dor-insert.go
   - GOOS=linux GOARCH=386 go build -ldflags="-s -w" -a -installsuffix static -o dor-insert-${TRAVIS_TAG}-386 cmd/dor-insert/dor-insert.go
   - GOOS=windows GOARCH=386 go build -ldflags="-s -w" -a -installsuffix static -o dor-insert-${TRAVIS_TAG}-x86.exe cmd/dor-insert/dor-insert.go
   - GOOS=darwin go build -ldflags="-s -w" -a -installsuffix static -o dor-insert-${TRAVIS_TAG}-mac cmd/dor-insert/dor-insert.go
@@ -25,10 +25,10 @@ deploy:
   api_key: $GITHUB_TOKEN
   skip_cleanup: true
   file:
-    - dor-web-${TRAVIS_TAG}-amd64
-    - dor-web-${TRAVIS_TAG}-386
-    - dor-web-${TRAVIS_TAG}-x86.exe
-    - dor-web-${TRAVIS_TAG}-mac
+    - dor-http-${TRAVIS_TAG}-amd64
+    - dor-http-${TRAVIS_TAG}-386
+    - dor-http-${TRAVIS_TAG}-x86.exe
+    - dor-http-${TRAVIS_TAG}-mac
     - dor-insert-${TRAVIS_TAG}-amd64
     - dor-insert-${TRAVIS_TAG}-386
     - dor-insert-${TRAVIS_TAG}-x86.exe
