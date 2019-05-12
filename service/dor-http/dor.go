@@ -5,8 +5,8 @@ import (
 	"log"
 	"os"
 
-	"github.com/ilyaglow/dor"
-	"github.com/ilyaglow/dor/web"
+	"github.com/ilyaglow/dor/v2"
+	web "github.com/ilyaglow/dor/v2/web"
 	"github.com/peterbourgon/ff"
 )
 
@@ -24,5 +24,5 @@ func main() {
 		panic(err)
 	}
 
-	log.Fatal(dorweb.Serve(*listen, d))
+	log.Fatal(web.Serve(*listen, d))
 }

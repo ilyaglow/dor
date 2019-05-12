@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"net/http"
 
-	"github.com/ilyaglow/dor"
+	"github.com/ilyaglow/dor/v2"
 	"github.com/julienschmidt/httprouter"
 )
 
