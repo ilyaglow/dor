@@ -1,4 +1,4 @@
-module github.com/ilyaglow/dor
+module github.com/ilyaglow/dor/v2
 
 go 1.12
 
