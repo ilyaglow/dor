@@ -68,54 +68,54 @@ $: curl 127.0.0.1:8080/rank/github.com
   "ranks": [
     {
       "domain": "github.com",
-      "rank": 33,
-      "date": "2018-01-11T18:01:27.251103268Z",
-      "source": "majestic",
-      "raw": "29,23,github.com,com,179825,518189,github.com,com,29,23,179994,518726"
-    },
-    {
-      "domain": "github.com",
-      "rank": 66,
-      "date": "2018-01-11T18:01:27.97067767Z",
-      "source": "statvoo",
-      "raw": ""
-    },
-    {
-      "domain": "github.com",
-      "rank": 72,
-      "date": "2018-01-11T18:04:26.267833256Z",
-      "source": "alexa",
-      "raw": ""
-    },
-    {
-      "domain": "github.com",
-      "rank": 2367,
-      "last_update": "2018-01-11T18:06:50.866600102Z",
-      "source": "umbrella",
-      "raw": ""
-    },
-    {
-      "domain": "github.com",
-      "rank": 115,
-      "last_update": "2018-03-27T17:01:13.535Z",
-      "source": "pagerank",
-      "raw": ""
-    },
-    {
-      "domain": "github.com",
-      "rank": 68,
-      "last_update": "2018-03-27T17:01:13.535Z",
+      "rank": 40,
+      "date": "2019-06-01T00:00:00Z",
       "source": "tranco",
       "raw": ""
     },
     {
       "domain": "github.com",
-      "rank": 114,
-      "date": "2019-05-04T00:00:00Z",
+      "rank": 123,
+      "date": "2019-06-01T00:00:00Z",
       "source": "quantcast",
+      "raw": ""
+    },
+    {
+      "domain": "github.com",
+      "rank": 66,
+      "date": "2019-06-01T00:00:00Z",
+      "source": "statvoo",
+      "raw": ""
+    },
+    {
+      "domain": "github.com",
+      "rank": 2555,
+      "date": "2019-06-01T00:00:00Z",
+      "source": "umbrella",
+      "raw": ""
+    },
+    {
+      "domain": "github.com",
+      "rank": 45,
+      "date": "2019-06-01T00:00:00Z",
+      "source": "alexa",
+      "raw": ""
+    },
+    {
+      "domain": "github.com",
+      "rank": 29,
+      "date": "2019-06-01T00:00:00Z",
+      "source": "majestic",
+      "raw": "29,23,github.com,com,179597,516432,github.com,com,29,23,179410,516889"
+    },
+    {
+      "domain": "github.com",
+      "rank": 39,
+      "date": "2019-06-01T00:00:00Z",
+      "source": "pagerank",
       "raw": ""
     }
   ],
-  "timestamp": "2018-01-11T18:07:09.186271429Z"
+  "timestamp": "2019-06-01T22:06:12.662492307Z"
 }
 ```
