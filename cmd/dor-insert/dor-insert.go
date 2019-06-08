@@ -5,7 +5,7 @@ import (
 	"os"
 	"time"
 
-	"github.com/ilyaglow/dor"
+	"github.com/ilyaglow/dor/v2"
 	"github.com/peterbourgon/ff"
 )
 

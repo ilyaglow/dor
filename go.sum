@@ -7,10 +7,6 @@ github.com/davecgh/go-spew v1.1.0 h1:ZDRjVQ15GmhC3fiQ8ni8+OwkZQO4DARzQgrnXU1Liz8
 github.com/davecgh/go-spew v1.1.0/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
 github.com/globalsign/mgo v0.0.0-20181015135952-eeefdecb41b8 h1:DujepqpGd1hyOd7aW59XpK7Qymp8iy83xq74fLr21is=
 github.com/globalsign/mgo v0.0.0-20181015135952-eeefdecb41b8/go.mod h1:xkRDCp4j0OGD1HRkm4kmhM+pmpv3AKq5SU7GMg4oO/Q=
-github.com/ilyaglow/dor v0.0.0-20190504215159-8de8fda256d2 h1:WqO2pa0BVb7dMhFjm//nRBdYLArIaWeoHmX9QaL2gGM=
-github.com/ilyaglow/dor v0.0.0-20190504215159-8de8fda256d2/go.mod h1:iGU3/cfujukaQ4vp7kdCxjkHOXBWFJgWe6nWesCwoHo=
-github.com/ilyaglow/dor v1.1.0 h1:dhrPxUPuS4eNM/Sq6rdVONLFYlIcWhi/oAyGds/nxxA=
-github.com/ilyaglow/dor v1.1.0/go.mod h1:grDkRGoeUKZwzVkCjra5SafMAK7nkNJub8ekx1TExoM=
 github.com/julienschmidt/httprouter v1.2.0 h1:TDTW5Yz1mjftljbcKqRcrYhd4XeOoI98t+9HbQbYf7g=
 github.com/julienschmidt/httprouter v1.2.0/go.mod h1:SYymIcj16QtmaHHD7aYtjjsJG7VTCxuUUipMqKk8s4w=
 github.com/kr/pretty v0.1.0 h1:L/CwN0zerZDmRFUapSPitk6f+Q3+0za1rQkzVuMiMFI=
