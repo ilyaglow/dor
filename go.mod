@@ -1,6 +1,4 @@
-module github.com/ilyaglow/dor
-
-go 1.12
+module github.com/ilyaglow/dor/v2
 
 require (
 	github.com/bkaradzic/go-lz4 v1.0.0 // indirect
