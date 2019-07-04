@@ -21,7 +21,6 @@ var ingesters = []Ingester{
 //	- Alexa Top 1 Million
 //	- Majestic Top 1 Million
 //	- Umbrella Top 1 Million
-//	- Statvoo Top 1 Million
 //	- PageRank Top 10 Millions
 //	- Tranco Top 1 Million
 type IngesterConf struct {

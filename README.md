@@ -8,7 +8,6 @@ Fast HTTP service which shows a specified domain rank from following providers:
 - [Alexa](https://www.alexa.com/topsites)
 - [Majestic](https://blog.majestic.com/development/alexa-top-1-million-sites-retired-heres-majestic-million/)
 - [Umbrella OpenDNS](https://umbrella.cisco.com/blog/2016/12/14/cisco-umbrella-1-million/)
-- [Statvoo](https://statvoo.com/top/sites)
 - [Open PageRank](https://www.domcop.com/top-10-million-domains)
 - [Tranco List](https://tranco-list.eu/)
 - [Quantcast](https://www.quantcast.com/top-sites/)
@@ -78,13 +77,6 @@ $: curl 127.0.0.1:8080/rank/github.com
       "rank": 123,
       "date": "2019-06-01T00:00:00Z",
       "source": "quantcast",
-      "raw": ""
-    },
-    {
-      "domain": "github.com",
-      "rank": 66,
-      "date": "2019-06-01T00:00:00Z",
-      "source": "statvoo",
       "raw": ""
     },
     {

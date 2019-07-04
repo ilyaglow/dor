@@ -4,7 +4,6 @@ which shows a specified domain's rank from the following providers:
 * Alexa
 * Majestic
 * Umbrella OpenDNS
-* Statvoo
 * Open PageRank
 * Tranco
 * Quantcast
@@ -29,13 +28,6 @@ Server response:
 		  "date": "2018-01-11T18:01:27.251103268Z",
 		  "source": "majestic",
 		  "raw": "29,23,github.com,com,179825,518189,github.com,com,29,23,179994,518726"
-		},
-		{
-		  "domain": "github.com",
-		  "rank": 66,
-		  "date": "2018-01-11T18:01:27.97067767Z",
-		  "source": "statvoo",
-		  "raw": ""
 		},
 		{
 		  "domain": "github.com",
