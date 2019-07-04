@@ -8,7 +8,6 @@ import (
 // ingesters is a slice of implemented Ingester structs
 var ingesters = []Ingester{
 	NewAlexa(),
-	NewStatvoo(),
 	NewUmbrella(),
 	NewMajestic(),
 	NewPageRank(),
