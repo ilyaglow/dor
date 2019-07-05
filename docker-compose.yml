@@ -1,7 +1,9 @@
 version: "2"
 services:
   web:
-    build: ./service/dor-http/
+    build:
+      context: .
+      dockerfile: dor-http.Dockerfile
     restart: always
     depends_on:
       - clickhouse
@@ -12,7 +14,9 @@ services:
       DOR_STORAGE: "clickhouse"
 
   insert:
-    build: ./cmd/dor-insert/
+    build:
+      context: .
+      dockerfile: dor-insert.Dockerfile
     restart: always
     depends_on:
       - clickhouse
