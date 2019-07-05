@@ -15,7 +15,7 @@ func main() {
 	fs := flag.NewFlagSet("DOR", flag.ExitOnError)
 	var (
 		storage  = fs.String("storage", "clickhouse", "storage type")
-		location = fs.String("storage-url", "", "url of the storage")
+		location = fs.String("storage-url", "tcp://clickhouse:9000", "url of the storage")
 	)
 	ff.Parse(fs, os.Args[1:], ff.WithEnvVarPrefix("DOR"))
 
