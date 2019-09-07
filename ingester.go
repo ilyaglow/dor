@@ -5,6 +5,12 @@ import (
 	"time"
 )
 
+// Ingester fetches data and uploads it to the Storage
+type Ingester interface {
+	Do() (chan *Entry, error) // returns a channel for consumers
+	GetDesc() string          // simple getter for the source
+}
+
 // ingesters is a slice of implemented Ingester structs
 var ingesters = []Ingester{
 	NewAlexa(),

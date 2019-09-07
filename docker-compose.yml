@@ -27,5 +27,7 @@ services:
   clickhouse:
     restart: always
     image: yandex/clickhouse-server:latest
+    environment:
+      TZ: UTC
     volumes:
       - ./storage:/var/lib/clickhouse

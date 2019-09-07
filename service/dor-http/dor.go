@@ -16,8 +16,11 @@ func main() {
 		storage  = fs.String("storage", "clickhouse", "storage type")
 		location = fs.String("storage-url", "tcp://clickhouse:9000", "url of the storage")
 		listen   = fs.String("listen-addr", ":8080", "listen address")
+		ttl      = fs.Int("ttl", 30, "records TTL in days")
 	)
 	ff.Parse(fs, os.Args[1:], ff.WithEnvVarPrefix("DOR"))
+
+	dor.DefaultTTL = *ttl
 
 	d, err := dor.New(*storage, *location, false)
 	if err != nil {

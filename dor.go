@@ -12,11 +12,8 @@ const (
 	tblName   = "ranks"
 )
 
-// Ingester fetches data and uploads it to the Storage
-type Ingester interface {
-	Do() (chan *Entry, error) // returns a channel for consumers
-	GetDesc() string          // simple getter for the source
-}
+// DefaultTTL for records in days.
+var DefaultTTL = 30
 
 // Storage represents an interface to store and query ranks.
 type Storage interface {
@@ -60,14 +57,14 @@ func New(stn string, stl string, keep bool) (*App, error) {
 	case "clickhouse":
 		s, err = NewClickhouseStorage(stl, tblName, batchSize)
 		if err != nil {
-			return nil, err
+			return nil, fmt.Errorf("new clickhouse storage: %w", err)
 		}
 	case "memory":
 		s = &MemoryStorage{make(map[string]*memoryCollection)}
 	case "mongodb":
 		s, err = NewMongoStorage(stl, "dor", tblName, batchSize, 5, keep)
 		if err != nil {
-			return nil, err
+			return nil, fmt.Errorf("new mongo storage: %w", err)
 		}
 	default:
 		return nil, fmt.Errorf("%s storage is not implemented", stn)

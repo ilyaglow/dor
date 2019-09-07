@@ -18,9 +18,8 @@ const (
 			rawdata	String,
 			source	String,
 			date	Date DEFAULT today()
-		) ENGINE = MergeTree
-		PARTITION BY toYYYYMM(date)
-		ORDER BY (domain, date)
+		) ENGINE = MergeTree(date, (domain, source), 8192)
+		TTL date + toIntervalDay(%d)
 	`
 	insertStmt = `
 		INSERT INTO %s (rank, domain, rawdata, source) VALUES (?, ?, ?, ?)
@@ -36,9 +35,9 @@ type ClickhouseStorage struct {
 
 // NewClickhouseStorage bootstraps ClickhouseStorage.
 func NewClickhouseStorage(location, table string, batch int) (*ClickhouseStorage, error) {
-	db, err := prepareDB(location, table)
+	db, err := prepareDB(location, table, DefaultTTL)
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("prepare: %w", err)
 	}
 
 	return &ClickhouseStorage{
@@ -48,19 +47,19 @@ func NewClickhouseStorage(location, table string, batch int) (*ClickhouseStorage
 	}, nil
 }
 
-func prepareDB(location, table string) (*sql.DB, error) {
+func prepareDB(location, table string, ttl int) (*sql.DB, error) {
 	conn, err := sql.Open("clickhouse", location)
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("sql.Open: %w", err)
 	}
 
 	if err := conn.Ping(); err != nil {
-		return nil, err
+		return nil, fmt.Errorf("ping: %w", err)
 	}
 
-	_, err = conn.Exec(fmt.Sprintf(createStmt, table))
+	_, err = conn.Exec(fmt.Sprintf(createStmt, table, ttl))
 	if err != nil {
-		return conn, err
+		return conn, fmt.Errorf("create table: %w", err)
 	}
 
 	return conn, nil
