@@ -11,6 +11,7 @@ Fast HTTP service which shows a specified domain rank from following providers:
 - [Open PageRank](https://www.domcop.com/top-10-million-domains)
 - [Tranco List](https://tranco-list.eu/)
 - [Quantcast](https://www.quantcast.com/top-sites/)
+- [YandexRadar](https://radar.yandex.ru/)
 
 Can be used as a base for a domain categorization / network filters /
 suspicious domain detection.
@@ -67,47 +68,54 @@ $: curl 127.0.0.1:8080/rank/github.com
   "ranks": [
     {
       "domain": "github.com",
-      "rank": 40,
-      "date": "2019-06-01T00:00:00Z",
-      "source": "tranco",
-      "raw": ""
-    },
-    {
-      "domain": "github.com",
-      "rank": 123,
-      "date": "2019-06-01T00:00:00Z",
-      "source": "quantcast",
-      "raw": ""
-    },
-    {
-      "domain": "github.com",
-      "rank": 2555,
-      "date": "2019-06-01T00:00:00Z",
+      "rank": 2698,
+      "date": "2019-09-07T00:00:00Z",
       "source": "umbrella",
       "raw": ""
     },
     {
       "domain": "github.com",
-      "rank": 45,
-      "date": "2019-06-01T00:00:00Z",
+      "rank": 29,
+      "date": "2019-09-07T00:00:00Z",
+      "source": "majestic",
+      "raw": "29,24,github.com,com,176946,489686,github.com,com,29,24,176096,487221"
+    },
+    {
+      "domain": "github.com",
+      "rank": 26,
+      "date": "2019-09-07T00:00:00Z",
+      "source": "pagerank",
+      "raw": ""
+    },
+    {
+      "domain": "github.com",
+      "rank": 32,
+      "date": "2019-09-07T00:00:00Z",
       "source": "alexa",
       "raw": ""
     },
     {
       "domain": "github.com",
-      "rank": 29,
-      "date": "2019-06-01T00:00:00Z",
-      "source": "majestic",
-      "raw": "29,23,github.com,com,179597,516432,github.com,com,29,23,179410,516889"
+      "rank": 467,
+      "date": "2019-09-07T00:00:00Z",
+      "source": "yandex-radar",
+      "raw": "The world’s leading software development platform · GitHub,github.com,,Сервисы,,,1520000,2340000,,,"
     },
     {
       "domain": "github.com",
-      "rank": 39,
-      "date": "2019-06-01T00:00:00Z",
-      "source": "pagerank",
+      "rank": 43,
+      "date": "2019-09-07T00:00:00Z",
+      "source": "tranco",
+      "raw": ""
+    },
+    {
+      "domain": "github.com",
+      "rank": 168,
+      "date": "2019-09-07T00:00:00Z",
+      "source": "quantcast",
       "raw": ""
     }
   ],
-  "timestamp": "2019-06-01T22:06:12.662492307Z"
+  "timestamp": "2019-09-07T14:32:32.9725943Z"
 }
 ```

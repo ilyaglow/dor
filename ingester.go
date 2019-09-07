@@ -13,6 +13,7 @@ var ingesters = []Ingester{
 	NewPageRank(),
 	NewTranco(),
 	NewQuantcast(),
+	NewYandexRadar(),
 }
 
 // IngesterConf represents a top popular domains provider configuration.
